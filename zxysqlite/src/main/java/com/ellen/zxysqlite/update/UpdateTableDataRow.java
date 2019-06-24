@@ -1,6 +1,7 @@
 package com.ellen.zxysqlite.update;
 
 import com.ellen.zxysqlite.helper.BaseSql;
+import com.ellen.zxysqlite.helper.WhereSymbolEnum;
 import com.ellen.zxysqlite.helper.WhereValue;
 
 import java.util.HashMap;
@@ -33,31 +34,35 @@ public class UpdateTableDataRow extends BaseSql {
     }
 
     public UpdateTableDataRow addEqualWhereValue(String whereName, Object value){
-        return addWherValue(whereName,"=",value);
+        return addWherValue(whereName, WhereSymbolEnum.EQUAL,value);
     }
 
     public UpdateTableDataRow addNoEqualWhereValue(String whereName, Object value){
-        return addWherValue(whereName,"!=",value);
+        return addWherValue(whereName,WhereSymbolEnum.NO_EQUAl,value);
     }
 
     public UpdateTableDataRow addMoreThanTheWhereValue(String whereName, Object value){
-        return addWherValue(whereName,">",value);
+        return addWherValue(whereName,WhereSymbolEnum.MORE_THAN,value);
     }
 
     public UpdateTableDataRow addMoreThanTheEqualWhereValue(String whereName, Object value){
-        return addWherValue(whereName,">=",value);
+        return addWherValue(whereName,WhereSymbolEnum.MORE_THAN_EQUAL,value);
     }
 
     public UpdateTableDataRow addLessThanWhereValue(String whereName, Object value){
-        return addWherValue(whereName,"<",value);
+        return addWherValue(whereName,WhereSymbolEnum.LESS_THAN,value);
     }
 
     public UpdateTableDataRow addLessThanEqualWhereValue(String whereName, Object value){
-        return addWherValue(whereName,"<=",value);
+        return addWherValue(whereName,WhereSymbolEnum.LESS_THAN_EQUAL,value);
     }
 
-    private UpdateTableDataRow addWherValue(String whereName, String whereFuHao, Object value){
-        WhereValue whereValue = new WhereValue(whereName,whereFuHao,value);
+    public UpdateTableDataRow addLikeWhereValue(String whereName, Object value){
+        return addWherValue(whereName,WhereSymbolEnum.LIKE,value);
+    }
+
+    private UpdateTableDataRow addWherValue(String whereName, WhereSymbolEnum whereSymbolEnum, Object value){
+        WhereValue whereValue = new WhereValue(whereName,whereSymbolEnum.getSymbol(),value);
         whereMap.put(whereName,whereValue);
         return this;
     }

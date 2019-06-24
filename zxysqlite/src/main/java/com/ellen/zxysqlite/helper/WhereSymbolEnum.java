@@ -8,8 +8,7 @@ public enum WhereSymbolEnum {
     LESS_THAN("<"),
     MORE_THAN_EQUAL(">="),
     LESS_THAN_EQUAL("<="),
-    LIKE("LIKE")
-    ;
+    LIKE("LIKE");
 
     private String symbol;
 
