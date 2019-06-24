@@ -1,7 +1,7 @@
 package com.ellen.zxysqlite.delete;
 
 /**
- * 删除表的某一列
+ * 删除表的某一列(Android SQLite不支持)
  */
 public class DeleteTableColumn {
     private String tableName;

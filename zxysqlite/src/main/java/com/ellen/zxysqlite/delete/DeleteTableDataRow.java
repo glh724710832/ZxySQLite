@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 删除数据列
+ * 删除数据行
  */
 public class DeleteTableDataRow extends BaseSql {
 

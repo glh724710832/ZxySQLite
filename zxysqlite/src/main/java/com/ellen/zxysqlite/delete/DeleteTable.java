@@ -5,6 +5,9 @@ import com.ellen.zxysqlite.helper.BaseSql;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 删除表(支持删除多个表)
+ */
 public class DeleteTable extends BaseSql {
     private List<String> tableNameList;
 

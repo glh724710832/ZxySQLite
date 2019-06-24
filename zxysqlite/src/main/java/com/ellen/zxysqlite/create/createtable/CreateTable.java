@@ -6,24 +6,26 @@ import com.ellen.zxysqlite.helper.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 创建表
+ */
 public class CreateTable extends BaseSql {
 
     private String tableName;
     private List<Field> fieldList;
 
     public static CreateTable getInstance() {
+        CreateTable createTable = new CreateTable();
+        createTable.fieldList = new ArrayList<>();
         return new CreateTable();
     }
 
-    public CreateTable tableName(String tableName) {
+    public CreateTable addTableName(String tableName) {
         this.tableName = tableName;
         return this;
     }
 
     public CreateTable addField(Field field) {
-        if (fieldList == null) {
-            fieldList = new ArrayList<>();
-        }
         fieldList.add(field);
         return this;
     }

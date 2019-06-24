@@ -2,6 +2,9 @@ package com.ellen.zxysqlite.add;
 
 import com.ellen.zxysqlite.helper.Field;
 
+/**
+ * 动态添加表的列
+ */
 public class AddTableColumn {
     private String tableName;
     private Field field;

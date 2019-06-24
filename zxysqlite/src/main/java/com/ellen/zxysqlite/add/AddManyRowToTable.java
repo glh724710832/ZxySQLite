@@ -6,6 +6,13 @@ import com.ellen.zxysqlite.helper.BaseSql;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 添加多行数据
+ *
+ * example:
+ * INSERT INTO student (id,name,sex) VALUES (3,'李三'，'男'),(4,'王五','女');
+ *
+ */
 public class AddManyRowToTable extends BaseSql {
     private String tableName;
     private List<String> fieldList;

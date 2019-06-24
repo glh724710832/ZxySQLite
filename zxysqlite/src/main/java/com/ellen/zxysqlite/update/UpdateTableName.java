@@ -1,5 +1,8 @@
 package com.ellen.zxysqlite.update;
 
+/**
+ * 重命名表的名字
+ */
 public class UpdateTableName {
     private String oldTableName;
     private String newTableName;

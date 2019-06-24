@@ -6,11 +6,14 @@ import com.ellen.zxysqlite.helper.Value;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 单条数据添加
+ */
 public class AddSingleRowToTable extends BaseSql {
     private String tableName;
     private List<Value> valueList;
 
-    public static AddSingleRowToTable getInstanc(){
+    public static AddSingleRowToTable getInstance(){
         AddSingleRowToTable addRowToTable = new AddSingleRowToTable();
         addRowToTable.valueList = new ArrayList<>();
         return addRowToTable;

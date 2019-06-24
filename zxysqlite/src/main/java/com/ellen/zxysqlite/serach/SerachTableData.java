@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 查询表数据，查询条件可有可无，有则按照条件找，where语句支持自定义，无则获取表的所有数据
+ */
 public class SerachTableData extends BaseSql {
     private String tableName;
     private List<String> selectFieldNameList;
