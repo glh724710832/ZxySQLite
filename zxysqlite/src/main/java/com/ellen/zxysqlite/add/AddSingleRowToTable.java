@@ -19,7 +19,7 @@ public class AddSingleRowToTable extends BaseSql {
         return addRowToTable;
     }
 
-    public AddSingleRowToTable addTableName(String tableName){
+    public AddSingleRowToTable setTableName(String tableName){
         this.tableName = tableName;
         return this;
     }

@@ -12,6 +12,16 @@ public class Field {
     private String autoEndString;
 
     /**
+     * 普通，啥都不能设置
+     * @param name
+     * @param filedType
+     */
+    public Field(String name, String filedType) {
+        this.name = name;
+        this.filedType = filedType;
+    }
+
+    /**
      * 自定义尾部
      * @param name
      * @param filedType

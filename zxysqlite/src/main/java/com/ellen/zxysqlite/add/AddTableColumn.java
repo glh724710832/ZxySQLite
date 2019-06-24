@@ -13,7 +13,7 @@ public class AddTableColumn {
         return new AddTableColumn();
     }
 
-    public AddTableColumn addTableColumn(String tableName){
+    public AddTableColumn setTableColumn(String tableName){
         this.tableName = tableName;
         return this;
     }

@@ -23,7 +23,7 @@ public class UpdateTableDataRow extends BaseSql {
         return updateTableColumn;
     }
 
-    public UpdateTableDataRow addTableName(String tableName){
+    public UpdateTableDataRow setTableName(String tableName){
         this.tableName = tableName;
         return this;
     }

@@ -25,7 +25,7 @@ public class AddManyRowToTable extends BaseSql {
         return addManyRowToTable;
     }
 
-    public AddManyRowToTable addTableName(String tableName) {
+    public AddManyRowToTable setTableName(String tableName) {
         this.tableName = tableName;
         return this;
     }

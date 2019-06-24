@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 //                .addSelectField("name")
 //                .createSQLAutoWhere(whereSql);
         String sql = CreateTable.getInstance()
-                .addTableName("student")
+                .setTableName("student")
                 .addField(new Field("id","int",true))
                 .addField(new Field("name","text",false,"默认名字"))
                 .createSQL();

@@ -19,7 +19,7 @@ public class CreateTable extends BaseSql {
         return createTable;
     }
 
-    public CreateTable addTableName(String tableName) {
+    public CreateTable setTableName(String tableName) {
         this.tableName = tableName;
         return this;
     }
