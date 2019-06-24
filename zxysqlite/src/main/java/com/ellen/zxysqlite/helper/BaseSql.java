@@ -1,5 +1,7 @@
 package com.ellen.zxysqlite.helper;
 
+import com.ellen.zxysqlite.create.createtable.Field;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,8 +18,8 @@ public class BaseSql {
         for (int i = 0; i < fieldList.size(); i++) {
             Field field = fieldList.get(i);
             stringBuilder.append(field.getName() + " " + field.getFiledType());
-            if (field.getEndString() != null) {
-                stringBuilder.append(" " + field.getEndString());
+            if (field.getAutoEndString() != null) {
+                stringBuilder.append(" " + field.getAutoEndString());
             }
             if (i != fieldList.size() - 1) {
                 stringBuilder.append(",");

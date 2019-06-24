@@ -1,6 +1,6 @@
 package com.ellen.zxysqlite.add;
 
-import com.ellen.zxysqlite.helper.Field;
+import com.ellen.zxysqlite.create.createtable.Field;
 
 /**
  * 动态添加表的列
@@ -30,8 +30,8 @@ public class AddTableColumn {
         stringBuilder.append(" ADD ");
         stringBuilder.append(field.getName()+" ");
         stringBuilder.append(field.getFiledType());
-        if(field.getEndString() != null)
-        stringBuilder.append(" "+field.getEndString());
+        if(field.getAutoEndString() != null)
+        stringBuilder.append(" "+field.getAutoEndString());
         stringBuilder.append(";");
         return stringBuilder.toString();
     }

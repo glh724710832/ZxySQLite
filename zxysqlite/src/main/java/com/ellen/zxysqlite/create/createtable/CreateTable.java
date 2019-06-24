@@ -1,7 +1,6 @@
 package com.ellen.zxysqlite.create.createtable;
 
 import com.ellen.zxysqlite.helper.BaseSql;
-import com.ellen.zxysqlite.helper.Field;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,7 @@ public class CreateTable extends BaseSql {
     public static CreateTable getInstance() {
         CreateTable createTable = new CreateTable();
         createTable.fieldList = new ArrayList<>();
-        return new CreateTable();
+        return createTable;
     }
 
     public CreateTable addTableName(String tableName) {
