@@ -32,35 +32,12 @@ public class Where {
         return addWhereValue("OR", fieldName, whereSymbolEnum, value);
     }
 
-    public Where addInWhereValue(String fieldName, List<Object> inList){
-        return this;
-    }
-
     private Where addWhereValue(String connection, String fieldName, WhereSymbolEnum whereSymbolEnum, Object value) {
         if (size != 0) {
             stringBuilder.append(" "+connection + " ");
         }
         stringBuilder.append(fieldName);
-        switch (whereSymbolEnum){
-            case EQUAL:
-                stringBuilder.append("=");
-                break;
-            case NO_EQUALS:
-                stringBuilder.append("!=");
-                break;
-            case MORE_THAN:
-                stringBuilder.append(">");
-                break;
-            case LESS_THAN:
-                stringBuilder.append("<");
-                break;
-            case MORE_THAN_EQUAL:
-                stringBuilder.append(">=");
-                break;
-            case LESS_THAN_EQUAL:
-                stringBuilder.append("<=");
-                break;
-        }
+        stringBuilder.append(" "+whereSymbolEnum.getSymbol()+" ");
         if(value instanceof String){
             stringBuilder.append("'"+value+"'");
         }else {

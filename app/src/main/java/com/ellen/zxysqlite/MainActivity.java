@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.ellen.zxysqlite.serach.SerachTableData;
 import com.ellen.zxysqlite.where.Where;
 import com.ellen.zxysqlite.helper.WhereSymbolEnum;
 import com.ellen.zxysqlite.where.WhereIn;
@@ -17,13 +18,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.tv);
-        String sql = Where.getInstance(false)
-                .addAndWhereValue("id1",WhereSymbolEnum.LESS_THAN,24)
-                .addAndWhereValue("id2",WhereSymbolEnum.LESS_THAN,24)
-                .addAndWhereValue("id3",WhereSymbolEnum.LESS_THAN,24)
-                .addAndWhereValue("id4",WhereSymbolEnum.LESS_THAN,24)
-                .addAndWhereValue("id5",WhereSymbolEnum.LESS_THAN,24)
+        String whereSql = Where.getInstance(false)
+                .addAndWhereValue("id",WhereSymbolEnum.LESS_THAN,4)
+                .addAndWhereValue("name",WhereSymbolEnum.LIKE,"ss")
                 .createSQL();
+        String sql = SerachTableData.getInstance()
+                .setTableName("student")
+                .addSelectField("id")
+                .addSelectField("name")
+                .createSQLAutoWhere(whereSql);
         textView.setText(sql);
     }
 }

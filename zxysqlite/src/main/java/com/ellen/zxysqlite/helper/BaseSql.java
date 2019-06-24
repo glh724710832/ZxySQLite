@@ -77,7 +77,8 @@ public class BaseSql {
         for(String columnName:columnNameSet){
             i++;
             WhereValue whereValue = whereMap.get(columnName);
-            stringBuilder.append(columnName+whereValue.getWhereSymbol());
+            stringBuilder.append(columnName);
+            stringBuilder.append(" "+whereValue.getWhereSymbol()+" ");
             if(whereValue.getValue() instanceof String){
                stringBuilder.append("'"+whereValue.getValue()+"'");
             }else {
