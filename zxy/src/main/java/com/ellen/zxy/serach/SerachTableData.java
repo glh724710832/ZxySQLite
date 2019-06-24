@@ -1,8 +1,8 @@
 package com.ellen.zxy.serach;
 
 
-import com.ellen.ellensqlite.helper.BaseSql;
-import com.ellen.ellensqlite.helper.WhereValue;
+import com.ellen.zxy.helper.BaseSql;
+import com.ellen.zxy.helper.WhereValue;
 
 import java.util.ArrayList;
 import java.util.HashMap;

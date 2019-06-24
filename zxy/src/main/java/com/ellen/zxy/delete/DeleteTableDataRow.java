@@ -1,7 +1,7 @@
 package com.ellen.zxy.delete;
 
-import com.ellen.ellensqlite.helper.BaseSql;
-import com.ellen.ellensqlite.helper.WhereValue;
+import com.ellen.zxy.helper.BaseSql;
+import com.ellen.zxy.helper.WhereValue;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,6 +1,6 @@
 package com.ellen.zxy.add;
 
-import com.ellen.ellensqlite.helper.Field;
+import com.ellen.zxy.helper.Field;
 
 public class AddTableColumn {
     private String tableName;

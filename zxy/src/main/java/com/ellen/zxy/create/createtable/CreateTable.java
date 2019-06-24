@@ -1,7 +1,7 @@
 package com.ellen.zxy.create.createtable;
 
-import com.ellen.ellensqlite.helper.BaseSql;
-import com.ellen.ellensqlite.helper.Field;
+import com.ellen.zxy.helper.BaseSql;
+import com.ellen.zxy.helper.Field;
 
 import java.util.ArrayList;
 import java.util.List;
