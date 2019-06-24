@@ -20,7 +20,7 @@ public class DeleteTableDataRow extends BaseSql {
         return deleteTableDataColumn;
     }
 
-    public DeleteTableDataRow addTableName(String tableName){
+    public DeleteTableDataRow setTableName(String tableName){
         this.tableName = tableName;
         return this;
     }

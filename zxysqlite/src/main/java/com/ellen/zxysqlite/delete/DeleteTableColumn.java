@@ -16,7 +16,7 @@ public class DeleteTableColumn {
         return this;
     }
 
-    public DeleteTableColumn addTableName(String tableName){
+    public DeleteTableColumn setTableName(String tableName){
         this.tableName = tableName;
         return this;
     }
