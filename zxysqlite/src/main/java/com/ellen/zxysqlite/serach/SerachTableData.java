@@ -146,4 +146,15 @@ public class SerachTableData extends BaseSql {
         return stringBuilder.toString();
     }
 
+    public String createSQLAutoWhere(String whereSQL,String orderSQL){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("SELECT ");
+        stringBuilder.append(getStringSQL(selectFieldNameList)+" ");
+        stringBuilder.append("FROM "+tableName);
+        stringBuilder.append(" WHERE " + whereSQL+" ");
+        stringBuilder.append("ORDER BY "+orderSQL);
+        stringBuilder.append(";");
+        return stringBuilder.toString();
+    }
+
 }

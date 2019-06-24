@@ -15,7 +15,7 @@ public class DeleteTable extends BaseSql {
         return new DeleteTable();
     }
 
-    public DeleteTable setTableName(String tableName) {
+    public DeleteTable addTableName(String tableName) {
         if (tableNameList == null) {
             tableNameList = new ArrayList<>();
         }
