@@ -21,20 +21,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.tv);
-        String whereSql = Where.getInstance(false)
-                .addAndWhereValue("id",WhereSymbolEnum.LESS_THAN,4)
-                .addAndWhereValue("name",WhereSymbolEnum.LIKE,"ss")
-                .createSQL();
-        String orderSql = Order.getInstance(false)
-                .setFirstOrderFieldName("id")
-                .setSecondOrderFieldName("name")
-                .setIsDesc(false)
-                .createSQL();
-        String sql = SerachTableData.getInstance()
+//        String whereSql = Where.getInstance(false)
+//                .addAndWhereValue("id",WhereSymbolEnum.LESS_THAN,4)
+//                .addAndWhereValue("name",WhereSymbolEnum.LIKE,"ss")
+//                .createSQL();
+//        String orderSql = Order.getInstance(false)
+//                .setFirstOrderFieldName("id")
+//                .setSecondOrderFieldName("name")
+//                .setIsDesc(false)
+//                .createSQL();
+//        String sql = SerachTableData.getInstance()
+//                .setTableName("student")
+//                .addSelectField("id")
+//                .addSelectField("name")
+//                .createSQLAutoWhere(whereSql,orderSql);
+        //创建表的SQL语句
+        String sql = CreateTable.getInstance()
                 .setTableName("student")
-                .addSelectField("id")
-                .addSelectField("name")
-                .createSQLAutoWhere(whereSql,orderSql);
+                .addField(Field.getPrimaryKeyField("id","int",true))
+                .addField(Field.getNotNullContainsDefaultValueField("name","text","阿三"))
+                .addField(Field.getOrdinaryField("sex","text"))
+                .createSQL();
         textView.setText(sql);
     }
 }

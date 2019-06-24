@@ -11,12 +11,36 @@ public class Field {
     //字段的末尾设置，例如:主键，不为NULL,默认值
     private String autoEndString;
 
+    public static Field getOrdinaryField(String name,String fieldType){
+        return new Field(name,fieldType);
+    }
+
+    public static Field getAutoEndStringField(String name,String fieldType,String autoEndString){
+        return new Field(name,fieldType,autoEndString);
+    }
+
+    public static Field getPrimaryKeyField(String name,String fieldType,boolean isAutoInCrement){
+        return new Field(name,fieldType,true,isAutoInCrement);
+    }
+
+    public static Field getContainsDefaultValueField(String name,String fieldType,Object defaultValue){
+        return new Field(name,fieldType,false,defaultValue);
+    }
+
+    public static Field getNotNullValueField(String name,String fieldType){
+        return new Field(name,fieldType,false,null);
+    }
+
+    public static Field getNotNullContainsDefaultValueField(String name,String fieldType,Object defaultValue){
+        return new Field(name,fieldType,false,defaultValue);
+    }
+
     /**
      * 普通，啥都不能设置
      * @param name
      * @param filedType
      */
-    public Field(String name, String filedType) {
+    private Field(String name, String filedType) {
         this.name = name;
         this.filedType = filedType;
     }
@@ -27,22 +51,26 @@ public class Field {
      * @param filedType
      * @param autoEndString
      */
-    public Field(String name, String filedType, String autoEndString) {
+    private Field(String name, String filedType, String autoEndString) {
         this.name = name;
         this.filedType = filedType;
         this.autoEndString = autoEndString;
     }
 
     /**
-     * 主键
-     * @param name
-     * @param filedType
-     * @param isPrimaryKey
+     *
+     * @param name 列名
+     * @param filedType 列在SQL中的数据类型
+     * @param isPrimaryKey 是否为主键
+     * @param isAutoInCrement 是否自增
      */
-    public Field(String name,String filedType,boolean isPrimaryKey){
+    private Field(String name,String filedType,boolean isPrimaryKey,boolean isAutoInCrement){
         StringBuilder stringBuilder = new StringBuilder();
         if(isPrimaryKey){
             stringBuilder.append(" PRIMARY KEY");
+        }
+        if(isAutoInCrement){
+            stringBuilder.append(" AUTOINCREMENT");
         }
         this.name = name;
         this.filedType = filedType;
@@ -57,7 +85,7 @@ public class Field {
      * @param isCanNull 是否能为NULL
      * @param defaultValue 默认值
      */
-    public Field(String name,String filedType,boolean isCanNull,Object defaultValue){
+    private Field(String name,String filedType,boolean isCanNull,Object defaultValue){
         StringBuilder stringBuilder = new StringBuilder();
         if(defaultValue != null){
             stringBuilder.append(" DEFAULT ");
