@@ -12,16 +12,16 @@ public class ZxyTable extends ZxySQLite {
         this.db = db;
     }
 
-    public SQLiteDatabase getSQliteDatabase(){
+    public SQLiteDatabase getSQLiteDatabase(){
         return db;
     }
 
     public void exeSQL(String sql){
-        getSQliteDatabase().execSQL(sql);
+        getSQLiteDatabase().execSQL(sql);
     }
 
     public Cursor serachBySQL(String sql){
-        return getSQliteDatabase().rawQuery(sql,null);
+        return getSQLiteDatabase().rawQuery(sql,null);
     }
 
 }

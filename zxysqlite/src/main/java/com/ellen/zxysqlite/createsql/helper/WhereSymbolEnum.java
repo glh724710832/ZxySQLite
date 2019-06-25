@@ -16,7 +16,7 @@ public enum WhereSymbolEnum {
         return symbol;
     }
 
-    private WhereSymbolEnum(String symbol) {
+    WhereSymbolEnum(String symbol) {
         this.symbol = symbol;
     }
 }
