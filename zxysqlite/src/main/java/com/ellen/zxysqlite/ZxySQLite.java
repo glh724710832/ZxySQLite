@@ -3,6 +3,7 @@ package com.ellen.zxysqlite;
 import com.ellen.zxysqlite.add.AddManyRowToTable;
 import com.ellen.zxysqlite.add.AddSingleRowToTable;
 import com.ellen.zxysqlite.add.AddTableColumn;
+import com.ellen.zxysqlite.create.createtable.CreateTable;
 import com.ellen.zxysqlite.delete.DeleteTable;
 import com.ellen.zxysqlite.delete.DeleteTableDataRow;
 import com.ellen.zxysqlite.order.Order;
@@ -14,7 +15,14 @@ import com.ellen.zxysqlite.where.Between;
 import com.ellen.zxysqlite.where.Where;
 import com.ellen.zxysqlite.where.WhereIn;
 
-public abstract class ZxySQLite {
+public class ZxySQLite {
+
+    /**
+     * 创建表的SQL语句生产类
+     */
+    public CreateTable getCreateTable(){
+        return CreateTable.getInstance();
+    }
 
     /**
      * 删除表SQL语句生产类

@@ -3,7 +3,6 @@ package com.ellen.zxysqlite;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.ellen.zxysqlite.add.AddManyRowToTable;
-import com.ellen.zxysqlite.add.AddSingleRowToTable;
 import com.ellen.zxysqlite.create.createtable.Field;
 import com.ellen.zxysqlite.helper.Value;
 
@@ -61,16 +60,16 @@ public class Student extends ZxySingleTable<Student>{
     @Override
     protected List<Field> getCreateSQLFields() {
         List<Field> fieldList = new ArrayList<>();
-        fieldList.add(Field.getPrimaryKeyField("id","int",true));
+        fieldList.add(Field.getPrimaryKeyField("id","int",false));
         fieldList.add(Field.getNotNullValueField("name","text"));
-        fieldList.add(Field.getPrimaryKeyField("sex","text",true));
-        fieldList.add(Field.getPrimaryKeyField("phone_number","text",true));
+        fieldList.add(Field.getNotNullValueField("sex","text"));
+        fieldList.add(Field.getNotNullValueField("phone_number","text"));
         return fieldList;
     }
 
     @Override
     protected boolean addData(Student data) {
-        String addSingleDataSQL = AddSingleRowToTable.getInstance()
+        String addSingleDataSQL = getAddSingleRowToTable()
                 .setTableName(getTableName())
                 .addData(new Value("id",data.getId()))
                 .addData(new Value("name",data.getName()))

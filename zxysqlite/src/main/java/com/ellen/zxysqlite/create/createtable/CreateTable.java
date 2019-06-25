@@ -37,4 +37,12 @@ public class CreateTable extends BaseSql {
         return stringBuilder.toString();
     }
 
+    public String createSQLByCheck() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("CREATE TABLE IF NOT EXISTS " + tableName + "(");
+        stringBuilder.append(getFieldString(fieldList));
+        stringBuilder.append(");");
+        return stringBuilder.toString();
+    }
+
 }

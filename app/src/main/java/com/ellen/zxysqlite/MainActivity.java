@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 .addField(Field.getNotNullContainsDefaultValueField("name","text","阿三"))
                 .addField(Field.getOrdinaryField("sex","text"))
                 .createSQL();
-        textView.setText(sql);
+        //textView.setText(sql);
         MySQLiteHelper mySQLiteHelper = new MySQLiteHelper(this,"library",null,1);
         Student student = new Student(mySQLiteHelper.getWritableDatabase());
     }
