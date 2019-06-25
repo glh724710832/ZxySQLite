@@ -4,13 +4,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.ellen.zxysqlite.create.createtable.CreateTable;
-import com.ellen.zxysqlite.create.createtable.Field;
-import com.ellen.zxysqlite.order.Order;
-import com.ellen.zxysqlite.serach.SerachTableData;
-import com.ellen.zxysqlite.where.Where;
-import com.ellen.zxysqlite.helper.WhereSymbolEnum;
-import com.ellen.zxysqlite.where.WhereIn;
+import com.ellen.zxysqlite.createsql.create.createtable.CreateTable;
+import com.ellen.zxysqlite.createsql.create.createtable.Field;
+import com.ellen.zxysqlite.createsql.order.Order;
+import com.ellen.zxysqlite.createsql.serach.SerachTableData;
+import com.ellen.zxysqlite.createsql.where.Where;
+import com.ellen.zxysqlite.createsql.helper.WhereSymbolEnum;
+import com.ellen.zxysqlite.createsql.where.WhereIn;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -2,14 +2,15 @@ package com.ellen.zxysqlite;
 
 import android.database.sqlite.SQLiteDatabase;
 
-import com.ellen.zxysqlite.add.AddManyRowToTable;
-import com.ellen.zxysqlite.create.createtable.Field;
-import com.ellen.zxysqlite.helper.Value;
+import com.ellen.zxysqlite.createsql.add.AddManyRowToTable;
+import com.ellen.zxysqlite.createsql.create.createtable.Field;
+import com.ellen.zxysqlite.createsql.helper.Value;
+import com.ellen.zxysqlite.table.ZxySingleTable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Student extends ZxySingleTable<Student>{
+public class Student extends ZxySingleTable<Student> {
 
     private int id;
     private String name;
