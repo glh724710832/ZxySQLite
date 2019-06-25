@@ -15,15 +15,11 @@ public class WhereIn extends BaseSql {
     //是否生产出的WhereIN语句包含WHERE
     private boolean isContainsWhere = true;
 
-    public static WhereIn getInstance(){
+    public static WhereIn getInstance(boolean isContainsWhere){
         WhereIn whereIn = new WhereIn();
         whereIn.valueList = new ArrayList();
+        whereIn.isContainsWhere = isContainsWhere;
         return whereIn;
-    }
-
-    public WhereIn setContainsWhere(boolean isContainsWhere){
-        this.isContainsWhere = isContainsWhere;
-        return this;
     }
 
     public WhereIn setFieldName(String fieldName){

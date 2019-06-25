@@ -10,9 +10,11 @@ package com.ellen.zxysqlite.where;
 public class Between {
     private Object leftValue;
     private Object rightValue;
+    private boolean isContainsWhere = false;
 
-    public static Between getInstance(){
+    public static Between getInstance(boolean isContainsWhere){
         Between between = new Between();
+        between.isContainsWhere = isContainsWhere;
         return between;
     }
 
@@ -28,6 +30,9 @@ public class Between {
 
     public String createSQL(){
         StringBuilder stringBuilder = new StringBuilder();
+        if(isContainsWhere){
+            stringBuilder.append("WHERE ");
+        }
         stringBuilder.append("BETWEEN ");
         if(leftValue instanceof String){
             stringBuilder.append("'"+leftValue+"'");

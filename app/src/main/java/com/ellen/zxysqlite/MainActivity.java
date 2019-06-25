@@ -43,5 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 .addField(Field.getOrdinaryField("sex","text"))
                 .createSQL();
         textView.setText(sql);
+        MySQLiteHelper mySQLiteHelper = new MySQLiteHelper(this,"library",null,1);
+        Student student = new Student(mySQLiteHelper.getWritableDatabase());
     }
 }

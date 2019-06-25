@@ -1,6 +1,7 @@
 package com.ellen.zxysqlite.add;
 
 
+import com.ellen.zxysqlite.create.createtable.Field;
 import com.ellen.zxysqlite.helper.BaseSql;
 
 import java.util.ArrayList;
@@ -32,6 +33,13 @@ public class AddManyRowToTable extends BaseSql {
 
     public AddManyRowToTable addFieldNameList(List<String> fieldList) {
         this.fieldList.addAll(fieldList);
+        return this;
+    }
+
+    public AddManyRowToTable addFieldList(List<Field> fieldList) {
+        for(Field field:fieldList){
+            this.fieldList.add(field.getName());
+        }
         return this;
     }
 
