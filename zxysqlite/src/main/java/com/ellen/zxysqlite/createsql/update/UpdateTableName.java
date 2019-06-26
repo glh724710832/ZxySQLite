@@ -11,7 +11,7 @@ public class UpdateTableName {
         return new UpdateTableName();
     }
 
-    public UpdateTableName addOldTableName(String oldTableName){
+    public UpdateTableName setOldTableName(String oldTableName){
         this.oldTableName = oldTableName;
         return this;
     }

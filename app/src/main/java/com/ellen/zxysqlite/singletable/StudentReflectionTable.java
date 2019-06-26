@@ -16,32 +16,6 @@ public class StudentReflectionTable extends ZxyReflectionTable<Student> {
         super(db, dataClass, autoTableName);
     }
 
-    public String getSQlStringType(Class<?> ziDuanJavaType) {
-        String sqlType = "";
-        if (ziDuanJavaType == Byte.class || ziDuanJavaType.getName().equals("byte")) {
-            sqlType = "integer";
-        } else if (ziDuanJavaType == Short.class || ziDuanJavaType.getName().equals("short")) {
-            sqlType = "integer";
-        } else if (ziDuanJavaType == Integer.class || ziDuanJavaType.getName().equals("int")) {
-            sqlType = "integer";
-        } else if (ziDuanJavaType == Long.class || ziDuanJavaType.getName().equals("long")) {
-            sqlType = "bigint";
-        } else if (ziDuanJavaType == Float.class || ziDuanJavaType.getName().equals("float")) {
-            sqlType = "real";
-        } else if (ziDuanJavaType == Double.class || ziDuanJavaType.getName().equals("double")) {
-            sqlType = "real";
-        } else if (ziDuanJavaType == Boolean.class || ziDuanJavaType.getName().equals("boolean")) {
-            sqlType = "integer";
-        } else if (ziDuanJavaType == Character.class || ziDuanJavaType.getName().equals("char")) {
-            sqlType = "text";
-        } else if (ziDuanJavaType == String.class) {
-            sqlType = "text";
-        } else {
-            sqlType = "no";
-        }
-        return sqlType;
-    }
-
     @Override
     public String getSQLFieldType(String classFieldName, Class typeClass) {
         return getSQlStringType(typeClass);
@@ -51,4 +25,20 @@ public class StudentReflectionTable extends ZxyReflectionTable<Student> {
     public String getSQLFieldName(String classFieldName, Class typeClass) {
         return classFieldName;
     }
+
+    @Override
+    protected Object setBooleanValue(String classFieldName, boolean value) {
+        if(value){
+            return "1";
+        }else {
+            return "0";
+        }
+    }
+
+    @Override
+    protected String setBooleanSQLDataType(String classFieldName) {
+        return "text";
+    }
+
+
 }

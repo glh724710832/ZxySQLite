@@ -36,6 +36,8 @@ public class Order {
         stringBuilder.append(firstOrderFieldName);
         if(secondOrderFieldName != null){
             stringBuilder.append(","+secondOrderFieldName+" ");
+        }else {
+            stringBuilder.append(" ");
         }
         if(isDESC){
             stringBuilder.append("DESC");

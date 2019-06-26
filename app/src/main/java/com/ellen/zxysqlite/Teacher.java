@@ -1,6 +1,6 @@
 package com.ellen.zxysqlite;
 
-public class Student {
+public class Teacher {
 
     private int id;
     private String name;
@@ -8,9 +8,7 @@ public class Student {
     private String phoneNumber;
     private boolean isMan = false;
 
-    public Student(){}
-
-    public Student(int id, String name, String sex, String phoneNumber, boolean isMan) {
+    public Teacher(int id, String name, String sex, String phoneNumber, boolean isMan) {
         this.id = id;
         this.name = name;
         this.sex = sex;

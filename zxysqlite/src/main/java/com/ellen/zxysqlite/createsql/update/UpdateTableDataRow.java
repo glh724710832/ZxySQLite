@@ -77,4 +77,13 @@ public class UpdateTableDataRow extends BaseSql {
         return stringBuilder.toString();
     }
 
+    public String createSQLAutoWhere(String whereSQL){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("UPDATE "+tableName);
+        stringBuilder.append(" SET ");
+        stringBuilder.append(getSetValueSQLString(setValueMap));
+        stringBuilder.append(" WHERE ");
+        stringBuilder.append(whereSQL+";");
+        return stringBuilder.toString();
+    }
 }

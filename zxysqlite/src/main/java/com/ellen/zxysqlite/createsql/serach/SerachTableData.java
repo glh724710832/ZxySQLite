@@ -18,6 +18,7 @@ public class SerachTableData extends BaseSql {
     private String tableName;
     private List<String> selectFieldNameList;
     private Map<String, WhereValue> whereValueMap;
+    private boolean isAddField = true;
 
     public static SerachTableData getInstance(){
         SerachTableData serachTableData  = new SerachTableData();
@@ -29,6 +30,11 @@ public class SerachTableData extends BaseSql {
     public SerachTableData setTableName(String tableName){
         this.tableName = tableName;
         return  this;
+    }
+
+    public SerachTableData setIsAddField(boolean isAddField){
+        this.isAddField = isAddField;
+        return this;
     }
 
     public SerachTableData addSelectField(String name){
@@ -77,7 +83,11 @@ public class SerachTableData extends BaseSql {
     public String createSQL(){
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT ");
-        stringBuilder.append(getStringSQL(selectFieldNameList)+" ");
+        if(isAddField) {
+            stringBuilder.append(getStringSQL(selectFieldNameList) + " ");
+        }else {
+            stringBuilder.append("* ");
+        }
         stringBuilder.append("FROM "+tableName);
         if(whereValueMap.size() > 0) {
             stringBuilder.append(" WHERE " + getWhereSQLString(whereValueMap));
@@ -95,7 +105,11 @@ public class SerachTableData extends BaseSql {
     public String createOrderSQL(String orderFieldName,boolean isDESC){
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT ");
-        stringBuilder.append(getStringSQL(selectFieldNameList)+" ");
+        if(isAddField) {
+            stringBuilder.append(getStringSQL(selectFieldNameList) + " ");
+        }else {
+            stringBuilder.append("* ");
+        }
         stringBuilder.append("FROM "+tableName);
         if(whereValueMap.size() > 0) {
             stringBuilder.append(" WHERE " + getWhereSQLString(whereValueMap)+" ");
@@ -118,7 +132,11 @@ public class SerachTableData extends BaseSql {
     public String createSQLAutoWhere(String whereSQL){
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT ");
-        stringBuilder.append(getStringSQL(selectFieldNameList)+" ");
+        if(isAddField) {
+            stringBuilder.append(getStringSQL(selectFieldNameList) + " ");
+        }else {
+            stringBuilder.append("* ");
+        }
         stringBuilder.append("FROM "+tableName);
         stringBuilder.append(" WHERE " + whereSQL);
         stringBuilder.append(";");
@@ -133,7 +151,11 @@ public class SerachTableData extends BaseSql {
     public String createSQLAutoWhere(String whereSQL,String orderFieldName,boolean isDESC){
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT ");
-        stringBuilder.append(getStringSQL(selectFieldNameList)+" ");
+        if(isAddField) {
+            stringBuilder.append(getStringSQL(selectFieldNameList) + " ");
+        }else {
+            stringBuilder.append("* ");
+        }
         stringBuilder.append("FROM "+tableName);
         stringBuilder.append(" WHERE " + whereSQL+" ");
         stringBuilder.append("ORDER BY "+orderFieldName+" ");
@@ -149,10 +171,26 @@ public class SerachTableData extends BaseSql {
     public String createSQLAutoWhere(String whereSQL,String orderSQL){
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT ");
-        stringBuilder.append(getStringSQL(selectFieldNameList)+" ");
+        if(isAddField) {
+            stringBuilder.append(getStringSQL(selectFieldNameList) + " ");
+        }else {
+            stringBuilder.append("* ");
+        }
         stringBuilder.append("FROM "+tableName);
         stringBuilder.append(" WHERE " + whereSQL+" ");
         stringBuilder.append("ORDER BY "+orderSQL);
+        stringBuilder.append(";");
+        return stringBuilder.toString();
+    }
+
+    public String getTableAllDataSQL(String orderSQL){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("SELECT ");
+        stringBuilder.append("* ");
+        stringBuilder.append("FROM "+tableName);
+        if(orderSQL != null) {
+            stringBuilder.append(" ORDER BY " + orderSQL);
+        }
         stringBuilder.append(";");
         return stringBuilder.toString();
     }
