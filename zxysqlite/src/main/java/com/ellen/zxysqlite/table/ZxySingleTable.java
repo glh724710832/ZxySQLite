@@ -2,7 +2,7 @@ package com.ellen.zxysqlite.table;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.ellen.zxysqlite.createsql.create.createtable.CreateTable;
-import com.ellen.zxysqlite.createsql.create.createtable.Field;
+import com.ellen.zxysqlite.createsql.create.createtable.SQLField;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public abstract class ZxySingleTable<T> extends ZxyTable {
     protected abstract String getTableName();
 
     //返回表的字段集合
-    protected abstract List<Field> getCreateSQLFields();
+    protected abstract List<SQLField> getCreateSQLFields();
 
     //增加数据(单条)
     protected abstract boolean addData(T data);
@@ -30,20 +30,12 @@ public abstract class ZxySingleTable<T> extends ZxyTable {
     //增加数据(多条)
     protected abstract boolean addData(List<T> datas);
 
-    //删除数据
-    protected abstract boolean deleteData(String deleteSQL);
-
-    //修改数据
-    protected abstract boolean updateData(String whereSQL, T t);
-
-    //查询数据
-    protected abstract List<T> serachData(String whereSQL);
 
     private void onCreateTable() {
-        List<Field> fieldList = getCreateSQLFields();
+        List<SQLField> SQLFieldList = getCreateSQLFields();
         CreateTable createTable = CreateTable.getInstance().setTableName(getTableName());
-        for (int i = 0; i < fieldList.size(); i++) {
-            createTable.addField(fieldList.get(i));
+        for (int i = 0; i < SQLFieldList.size(); i++) {
+            createTable.addField(SQLFieldList.get(i));
         }
         String createTableSQL = createTable.createSQLIfNotExists();
         exeSQL(createTableSQL);

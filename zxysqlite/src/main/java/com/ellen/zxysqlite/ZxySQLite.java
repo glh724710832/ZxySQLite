@@ -59,6 +59,8 @@ public class ZxySQLite {
     }
     /**
      * 增加数据（多条）的SQL语句生产类
+     * example:
+     * INSERT INTO student (id,name,sex) VALUES (3,'李三'，'男'),(4,'王五','女');
      */
     public AddManyRowToTable getAddManyRowToTable() {
         return AddManyRowToTable.getInstance();
@@ -116,6 +118,10 @@ public class ZxySQLite {
 
     /**
      * 排序Order生成的SQL语句生产类
+     * example1:
+     * ORDER BY id AESC
+     * example2:
+     * ORDER BY id,name ASC
      * @param isContainsOrderBy 生产出的Order是否包含ORDER BY
      * @return
      */

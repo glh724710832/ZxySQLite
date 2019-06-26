@@ -1,26 +1,30 @@
 package com.ellen.zxysqlite;
 
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
 import com.ellen.zxysqlite.createsql.create.createtable.CreateTable;
-import com.ellen.zxysqlite.createsql.create.createtable.Field;
-import com.ellen.zxysqlite.createsql.order.Order;
-import com.ellen.zxysqlite.createsql.serach.SerachTableData;
-import com.ellen.zxysqlite.createsql.where.Where;
-import com.ellen.zxysqlite.createsql.helper.WhereSymbolEnum;
-import com.ellen.zxysqlite.createsql.where.WhereIn;
+import com.ellen.zxysqlite.createsql.create.createtable.SQLField;
+import com.ellen.zxysqlite.singletable.StudentReflectionTable;
+import com.ellen.zxysqlite.table.reflection.ZxyReflectionTable;
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView textView;
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setContentView(R.layout.activity_main);
+        initView();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        textView = findViewById(R.id.tv);
 //        String whereSql = Where.getInstance(false)
 //                .addAndWhereValue("id",WhereSymbolEnum.LESS_THAN,4)
 //                .addAndWhereValue("name",WhereSymbolEnum.LIKE,"ss")
@@ -38,12 +42,21 @@ public class MainActivity extends AppCompatActivity {
         //创建表的SQL语句
         String sql = CreateTable.getInstance()
                 .setTableName("student")
-                .addField(Field.getPrimaryKeyField("id","int",true))
-                .addField(Field.getNotNullContainsDefaultValueField("name","text","阿三"))
-                .addField(Field.getOrdinaryField("sex","text"))
-                .createSQL();
+                .addField(SQLField.getPrimaryKeyField("id","int",true))
+                .addField(SQLField.getNotNullContainsDefaultValueField("name","text","阿三"))
+                .addField(SQLField.getOrdinaryField("sex","text"))
+                .createSQLIfNotExists();
         //textView.setText(sql);
-        MySQLiteHelper mySQLiteHelper = new MySQLiteHelper(this,"library",null,1);
-        Student student = new Student(mySQLiteHelper.getWritableDatabase());
+        initView();
+
     }
+
+
+    private void initView(){
+        textView = findViewById(R.id.tv);
+        MySQLiteHelper mySQLiteHelper = new MySQLiteHelper(this,"library",null,1);
+        ZxyReflectionTable zxyReflectionTable = new StudentReflectionTable(mySQLiteHelper.getReadableDatabase(),Student.class,"my_student");
+        zxyReflectionTable.onCreateTableIfNotExits();
+    }
+
 }

@@ -1,13 +1,13 @@
 package com.ellen.zxysqlite.createsql.add;
 
-import com.ellen.zxysqlite.createsql.create.createtable.Field;
+import com.ellen.zxysqlite.createsql.create.createtable.SQLField;
 
 /**
  * 动态添加表的列
  */
 public class AddTableColumn {
     private String tableName;
-    private Field field;
+    private SQLField SQLField;
 
     public static AddTableColumn getInstance(){
         return new AddTableColumn();
@@ -18,8 +18,8 @@ public class AddTableColumn {
         return this;
     }
 
-    public AddTableColumn addField(Field field){
-        this.field = field;
+    public AddTableColumn addField(SQLField SQLField){
+        this.SQLField = SQLField;
         return this;
     }
 
@@ -28,10 +28,10 @@ public class AddTableColumn {
         stringBuilder.append("ALTER TABLE ");
         stringBuilder.append(tableName);
         stringBuilder.append(" ADD ");
-        stringBuilder.append(field.getName()+" ");
-        stringBuilder.append(field.getFiledType());
-        if(field.getAutoEndString() != null)
-        stringBuilder.append(" "+field.getAutoEndString());
+        stringBuilder.append(SQLField.getName()+" ");
+        stringBuilder.append(SQLField.getFiledType());
+        if(SQLField.getAutoEndString() != null)
+        stringBuilder.append(" "+ SQLField.getAutoEndString());
         stringBuilder.append(";");
         return stringBuilder.toString();
     }

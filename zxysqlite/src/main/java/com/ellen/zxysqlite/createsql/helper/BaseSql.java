@@ -1,6 +1,6 @@
 package com.ellen.zxysqlite.createsql.helper;
 
-import com.ellen.zxysqlite.createsql.create.createtable.Field;
+import com.ellen.zxysqlite.createsql.create.createtable.SQLField;
 
 import java.util.List;
 import java.util.Map;
@@ -10,18 +10,18 @@ public class BaseSql {
 
     /**
      * 创建表的时候将Field集合映射为SQL子句
-    * @param fieldList
+    * @param SQLFieldList
      * @return
      */
-    protected String getFieldString(List<Field> fieldList){
+    protected String getFieldString(List<SQLField> SQLFieldList){
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < fieldList.size(); i++) {
-            Field field = fieldList.get(i);
-            stringBuilder.append(field.getName() + " " + field.getFiledType());
-            if (field.getAutoEndString() != null) {
-                stringBuilder.append(" " + field.getAutoEndString());
+        for (int i = 0; i < SQLFieldList.size(); i++) {
+            SQLField SQLField = SQLFieldList.get(i);
+            stringBuilder.append(SQLField.getName() + " " + SQLField.getFiledType());
+            if (SQLField.getAutoEndString() != null) {
+                stringBuilder.append(" " + SQLField.getAutoEndString());
             }
-            if (i != fieldList.size() - 1) {
+            if (i != SQLFieldList.size() - 1) {
                 stringBuilder.append(",");
             }
         }

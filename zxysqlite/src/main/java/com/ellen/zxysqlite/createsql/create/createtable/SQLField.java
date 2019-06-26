@@ -3,7 +3,7 @@ package com.ellen.zxysqlite.createsql.create.createtable;
 /**
  * 用于创建表的字段（列）
  */
-public class Field {
+public class SQLField {
     //字段的名称
     private String name;
     //字段的数据类型
@@ -11,28 +11,28 @@ public class Field {
     //字段的末尾设置，例如:主键，不为NULL,默认值
     private String autoEndString;
 
-    public static Field getOrdinaryField(String name,String fieldType){
-        return new Field(name,fieldType);
+    public static SQLField getOrdinaryField(String name, String fieldType){
+        return new SQLField(name,fieldType);
     }
 
-    public static Field getAutoEndStringField(String name,String fieldType,String autoEndString){
-        return new Field(name,fieldType,autoEndString);
+    public static SQLField getAutoEndStringField(String name, String fieldType, String autoEndString){
+        return new SQLField(name,fieldType,autoEndString);
     }
 
-    public static Field getPrimaryKeyField(String name,String fieldType,boolean isAutoInCrement){
-        return new Field(name,fieldType,true,isAutoInCrement);
+    public static SQLField getPrimaryKeyField(String name, String fieldType, boolean isAutoInCrement){
+        return new SQLField(name,fieldType,true,isAutoInCrement);
     }
 
-    public static Field getContainsDefaultValueField(String name,String fieldType,Object defaultValue){
-        return new Field(name,fieldType,false,defaultValue);
+    public static SQLField getContainsDefaultValueField(String name, String fieldType, Object defaultValue){
+        return new SQLField(name,fieldType,false,defaultValue);
     }
 
-    public static Field getNotNullValueField(String name,String fieldType){
-        return new Field(name,fieldType,false,null);
+    public static SQLField getNotNullValueField(String name, String fieldType){
+        return new SQLField(name,fieldType,false,null);
     }
 
-    public static Field getNotNullContainsDefaultValueField(String name,String fieldType,Object defaultValue){
-        return new Field(name,fieldType,false,defaultValue);
+    public static SQLField getNotNullContainsDefaultValueField(String name, String fieldType, Object defaultValue){
+        return new SQLField(name,fieldType,false,defaultValue);
     }
 
     /**
@@ -40,7 +40,7 @@ public class Field {
      * @param name
      * @param filedType
      */
-    private Field(String name, String filedType) {
+    private SQLField(String name, String filedType) {
         this.name = name;
         this.filedType = filedType;
     }
@@ -51,7 +51,7 @@ public class Field {
      * @param filedType
      * @param autoEndString
      */
-    private Field(String name, String filedType, String autoEndString) {
+    private SQLField(String name, String filedType, String autoEndString) {
         this.name = name;
         this.filedType = filedType;
         this.autoEndString = autoEndString;
@@ -64,7 +64,7 @@ public class Field {
      * @param isPrimaryKey 是否为主键
      * @param isAutoInCrement 是否自增
      */
-    private Field(String name,String filedType,boolean isPrimaryKey,boolean isAutoInCrement){
+    private SQLField(String name, String filedType, boolean isPrimaryKey, boolean isAutoInCrement){
         StringBuilder stringBuilder = new StringBuilder();
         if(isPrimaryKey){
             stringBuilder.append(" PRIMARY KEY");
@@ -85,7 +85,7 @@ public class Field {
      * @param isCanNull 是否能为NULL
      * @param defaultValue 默认值
      */
-    private Field(String name,String filedType,boolean isCanNull,Object defaultValue){
+    private SQLField(String name, String filedType, boolean isCanNull, Object defaultValue){
         StringBuilder stringBuilder = new StringBuilder();
         if(defaultValue != null){
             stringBuilder.append(" DEFAULT ");
