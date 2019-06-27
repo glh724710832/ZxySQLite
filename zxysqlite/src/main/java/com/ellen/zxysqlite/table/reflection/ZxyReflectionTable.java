@@ -73,7 +73,12 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
                 //这里是主键
                 sqlField = SQLField.getPrimaryKeyField(fieldName, fieldType,false);
             }else {
-                sqlField = SQLField.getOrdinaryField(fieldName, fieldType);
+                NotNull notNull = field.getAnnotation(NotNull.class);
+                if(notNull != null){
+                    sqlField = SQLField.getNotNullValueField(fieldName,fieldType);
+                }else {
+                    sqlField = SQLField.getOrdinaryField(fieldName, fieldType);
+                }
             }
             sqlNameMap.put(sqlField, field);
             sqlFieldList.add(sqlField);
@@ -467,29 +472,7 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
     protected abstract <E> E resumeConversionObject(Object value,String classFieldName,Class typeClass);
 
     public SQLFieldTypeEnum getSQlStringType(Class<?> ziDuanJavaType) {
-        SQLFieldTypeEnum sqlType = null;
-        if (ziDuanJavaType == Byte.class || ziDuanJavaType.getName().equals("byte")) {
-            sqlType = SQLFieldTypeEnum.INTEGER;
-        } else if (ziDuanJavaType == Short.class || ziDuanJavaType.getName().equals("short")) {
-            sqlType = SQLFieldTypeEnum.INTEGER;
-        } else if (ziDuanJavaType == Integer.class || ziDuanJavaType.getName().equals("int")) {
-            sqlType = SQLFieldTypeEnum.INTEGER;
-        } else if (ziDuanJavaType == Long.class || ziDuanJavaType.getName().equals("long")) {
-            sqlType = SQLFieldTypeEnum.BIG_INT;
-        } else if (ziDuanJavaType == Float.class || ziDuanJavaType.getName().equals("float")) {
-            sqlType = SQLFieldTypeEnum.REAL;
-        } else if (ziDuanJavaType == Double.class || ziDuanJavaType.getName().equals("double")) {
-            sqlType = SQLFieldTypeEnum.REAL;
-        } else if (ziDuanJavaType == Boolean.class || ziDuanJavaType.getName().equals("boolean")) {
-            sqlType = SQLFieldTypeEnum.INTEGER;
-        } else if (ziDuanJavaType == Character.class || ziDuanJavaType.getName().equals("char")) {
-            sqlType = SQLFieldTypeEnum.TEXT;
-        } else if (ziDuanJavaType == String.class) {
-            sqlType = SQLFieldTypeEnum.TEXT;
-        } else {
-            sqlType = SQLFieldTypeEnum.TEXT;
-        }
-        return sqlType;
+       return reflactionHelper.getSQlStringType(ziDuanJavaType);
     }
 
     public interface OnCreateSQLiteCallback {

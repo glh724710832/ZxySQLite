@@ -36,13 +36,26 @@ public class WhereIn extends BaseSql {
         return this;
     }
 
-    public String createSQL(){
+    public String createSQLWhereIn(){
         StringBuilder stringBuilder = new StringBuilder();
         if(isContainsWhere) {
             stringBuilder.append("WHERE ");
         }
         stringBuilder.append(fieldName);
         stringBuilder.append(" IN ");
+        stringBuilder.append("(");
+        stringBuilder.append(getStringSQL(valueList));
+        stringBuilder.append(")");
+        return stringBuilder.toString();
+    }
+
+    public String createSQLWhereNotIn(){
+        StringBuilder stringBuilder = new StringBuilder();
+        if(isContainsWhere) {
+            stringBuilder.append("WHERE ");
+        }
+        stringBuilder.append(fieldName);
+        stringBuilder.append(" NOT IN ");
         stringBuilder.append("(");
         stringBuilder.append(getStringSQL(valueList));
         stringBuilder.append(")");

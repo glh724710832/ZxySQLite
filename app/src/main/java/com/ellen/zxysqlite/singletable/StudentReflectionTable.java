@@ -50,7 +50,7 @@ public class StudentReflectionTable extends ZxyReflectionTable<Student> {
     }
 
     @Override
-    protected SQLFieldType conversion(String classFieldName, Class typeClass) {
+    protected SQLFieldType conversionSQLiteType(String classFieldName, Class typeClass) {
         return new SQLFieldType(SQLFieldTypeEnum.TEXT,null);
     }
 

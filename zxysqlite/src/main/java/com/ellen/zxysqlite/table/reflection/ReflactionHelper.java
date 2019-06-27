@@ -1,5 +1,7 @@
 package com.ellen.zxysqlite.table.reflection;
 
+import com.ellen.zxysqlite.createsql.helper.SQLFieldTypeEnum;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -91,6 +93,32 @@ public class ReflactionHelper<T> {
         }else {
             return null;
         }
+    }
+
+    public SQLFieldTypeEnum getSQlStringType(Class<?> ziDuanJavaType) {
+        SQLFieldTypeEnum sqlType = null;
+        if (ziDuanJavaType == Byte.class || ziDuanJavaType.getName().equals("byte")) {
+            sqlType = SQLFieldTypeEnum.INTEGER;
+        } else if (ziDuanJavaType == Short.class || ziDuanJavaType.getName().equals("short")) {
+            sqlType = SQLFieldTypeEnum.INTEGER;
+        } else if (ziDuanJavaType == Integer.class || ziDuanJavaType.getName().equals("int")) {
+            sqlType = SQLFieldTypeEnum.INTEGER;
+        } else if (ziDuanJavaType == Long.class || ziDuanJavaType.getName().equals("long")) {
+            sqlType = SQLFieldTypeEnum.BIG_INT;
+        } else if (ziDuanJavaType == Float.class || ziDuanJavaType.getName().equals("float")) {
+            sqlType = SQLFieldTypeEnum.REAL;
+        } else if (ziDuanJavaType == Double.class || ziDuanJavaType.getName().equals("double")) {
+            sqlType = SQLFieldTypeEnum.REAL;
+        } else if (ziDuanJavaType == Boolean.class || ziDuanJavaType.getName().equals("boolean")) {
+            sqlType = SQLFieldTypeEnum.INTEGER;
+        } else if (ziDuanJavaType == Character.class || ziDuanJavaType.getName().equals("char")) {
+            sqlType = SQLFieldTypeEnum.TEXT;
+        } else if (ziDuanJavaType == String.class) {
+            sqlType = SQLFieldTypeEnum.TEXT;
+        } else {
+            sqlType = SQLFieldTypeEnum.TEXT;
+        }
+        return sqlType;
     }
 
 }

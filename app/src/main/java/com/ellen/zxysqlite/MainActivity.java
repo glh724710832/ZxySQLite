@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("Ellen->建表成功", createSQL);
                 List<Phone> phoneList = new ArrayList<>();
                 System system1 = new System("Android", 4);
-                System system2 = new System("WindosPhone", 8);
+                System system2 = new System("WindowsPhone", 8);
                 System system3 = new System("Android", 6);
                 System system4 = new System("IOS", 20);
                 System system5 = new System("Android", 8);
@@ -98,8 +98,14 @@ public class MainActivity extends AppCompatActivity {
                 phoneSQLite.saveData(phoneList);
             }
         });
+        String whereSQL = phoneSQLite.getWhereIn(false)
+                .setFieldName("xinHao")
+                .addInValue("A-3")
+                .addInValue("A-4")
+                .addInValue("A-5")
+                .createSQLWhereIn();
         String orderSQL = Order.getInstance(false).setFirstOrderFieldName("id").setIsDesc(false).createSQL();
-        List<Phone> phoneList = phoneSQLite.getAllDatas(orderSQL);
+        List<Phone> phoneList = phoneSQLite.serach(whereSQL,orderSQL);
         for (Phone phone : phoneList) {
             Log.e("查询的数据", phone.toString());
         }

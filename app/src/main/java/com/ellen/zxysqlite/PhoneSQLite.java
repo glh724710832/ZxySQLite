@@ -30,20 +30,19 @@ public class PhoneSQLite extends ZxyReflectionTable<Phone> {
     }
 
     @Override
-    protected SQLFieldType conversion(String classFieldName, Class typeClass) {
+    protected SQLFieldType conversionSQLiteType(String classFieldName, Class typeClass) {
         SQLFieldType sqlFieldType = new SQLFieldType(SQLFieldTypeEnum.TEXT,null);
         return sqlFieldType;
     }
 
     @Override
-    protected String setConversionValue(Phone phone, String className, Class typeClass) {
-        Gson gson = new Gson();
-        return gson.toJson(phone.getSystem());
+    protected Object setConversionValue(Phone phone, String className, Class typeClass) {
+        return phone.getSystem().getName();
     }
 
     @Override
-    protected System resumeConversionObject(Object value, String className, Class typeClass) {
-        Gson gson = new Gson();
-        return gson.fromJson((String) value,System.class);
+    protected Object resumeConversionObject(Object value, String className, Class typeClass) {
+        System system = new System((String) value,2);
+        return system;
     }
 }

@@ -1,9 +1,14 @@
 package com.ellen.zxysqlite;
 
+import com.ellen.zxysqlite.table.reflection.NotNull;
+import com.ellen.zxysqlite.table.reflection.Primarykey;
+
 public class Phone {
 
+    @Primarykey
     private int id;
     private String xinHao;
+    @NotNull
     private String ciCun;
     private float price;
     private System system;
