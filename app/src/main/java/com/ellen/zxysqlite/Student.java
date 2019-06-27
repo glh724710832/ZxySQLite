@@ -7,6 +7,8 @@ public class Student {
     private String sex;
     private String phoneNumber;
     private boolean isMan = false;
+    private String date = "2018-04-05";
+    private Character nameOne = 'b';
 
     public Student(){}
 
@@ -56,5 +58,21 @@ public class Student {
 
     public void setMan(boolean man) {
         isMan = man;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public Character getNameOne() {
+        return nameOne;
+    }
+
+    public void setNameOne(Character nameOne) {
+        this.nameOne = nameOne;
     }
 }

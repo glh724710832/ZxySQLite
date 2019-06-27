@@ -36,7 +36,7 @@ public class BaseSql {
     protected String getValueString(List<Value> valueList){
         StringBuilder stringBuilder = new StringBuilder();
         for(int i=0;i<valueList.size();i++){
-            if(valueList.get(i).getValue() instanceof String){
+            if(valueList.get(i).getValue() instanceof String|| valueList.get(i).getValue() instanceof Character){
                 stringBuilder.append("'"+valueList.get(i).getValue()+"'");
             }else {
                 stringBuilder.append(valueList.get(i).getValue());
@@ -102,7 +102,7 @@ public class BaseSql {
             i++;
             Object value = setMap.get(columnName);
             stringBuilder.append(columnName+"=");
-            if(value instanceof String){
+            if(value instanceof String || value instanceof Character){
                 stringBuilder.append("'"+value+"'");
             }else {
                 stringBuilder.append(value);

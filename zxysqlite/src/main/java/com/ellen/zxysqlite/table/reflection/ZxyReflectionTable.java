@@ -8,10 +8,11 @@ import android.util.Log;
 import com.ellen.zxysqlite.createsql.add.AddManyRowToTable;
 import com.ellen.zxysqlite.createsql.add.AddSingleRowToTable;
 import com.ellen.zxysqlite.createsql.create.createtable.SQLField;
+import com.ellen.zxysqlite.createsql.helper.SQLFieldType;
+import com.ellen.zxysqlite.createsql.helper.SQLFieldTypeEnum;
 import com.ellen.zxysqlite.createsql.helper.Value;
 import com.ellen.zxysqlite.createsql.serach.SerachTableData;
 import com.ellen.zxysqlite.createsql.update.UpdateTableDataRow;
-import com.ellen.zxysqlite.createsql.update.UpdateTableName;
 import com.ellen.zxysqlite.table.ZxyTable;
 
 import java.lang.reflect.Constructor;
@@ -58,7 +59,7 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
         sqlFieldList = new ArrayList<>();
         List<Field> fieldList = reflactionHelper.getClassFieldList(dataClass,false);
         for(Field field:fieldList) {
-            String fieldType = getSQLFieldType(field.getName(),field.getType());
+            String fieldType = getSQLFieldType(field.getName(),field.getType()).getSQLFieldTypeString();
             String fieldName = getSQLFieldName(field.getName(),field.getType());
             SQLField sqlField = SQLField.getOrdinaryField(fieldName,fieldType);
             sqlNameMap.put(sqlField,field);
@@ -261,6 +262,19 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
         exeSQL(updateSql);
     }
 
+    /**
+     * 获取表中所有数据
+     * @param orderSQL
+     * @return
+     */
+    public List<T> getAllDatas(String orderSQL){
+        SerachTableData serachTableData = getSerachTableData().setTableName(tableName);
+        serachTableData.setIsAddField(false);
+        String getAllTableDataSQL = serachTableData.getTableAllDataSQL(orderSQL);
+        Log.e("查询语句",getAllTableDataSQL);
+        return serachDatasBySQL(getAllTableDataSQL);
+    }
+
     public List<T> serach(String whereSQL,String orderSQL){
         List<T> dataList = new ArrayList<>();
         SerachTableData serachTableData = getSerachTableData().setTableName(tableName);
@@ -297,30 +311,31 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
             for(int i=0;i<sqlFieldList.size();i++) {
                 Field field = sqlNameMap.get(sqlFieldList.get(i));
                 int index = cursor.getColumnIndex(sqlFieldList.get(i).getName());
-                String sqlDataType = getSQlStringType(field.getType());
+                String sqlDataType = getSQLFieldType(field.getName(),field.getType()).getTypeString();
                 Class type = field.getType();
                 Object value = null;
-                switch (sqlDataType){
-                    case "integer":
-                        value = cursor.getInt(index);
-                        break;
-                    case "bigint":
-                        value = cursor.getLong(index);
-                        break;
-                    case "real":
-                        if (type == Float.class || type.getName().equals("float")) {
-                            value = cursor.getFloat(index);
-                        } else if (type == Double.class || type.getName().equals("double")) {
-                            value = cursor.getDouble(index);
-                        }
-                        break;
-                    case "text":
-                        if (type == Character.class || type.getName().equals("char")) {
-                            value = cursor.getString(index).charAt(0);
-                        } else  {
-                            value = cursor.getString(index);
-                        }
-                        break;
+                if(sqlDataType.equals(SQLFieldTypeEnum.INTEGER.getTypeName())){
+                    value = cursor.getInt(index);
+                }else if(sqlDataType.equals(SQLFieldTypeEnum.BIG_INT.getTypeName())){
+                    value = cursor.getLong(index);
+                }else if(sqlDataType.equals(SQLFieldTypeEnum.REAL.getTypeName())){
+                    if (type == Float.class || type.getName().equals("float")) {
+                        value = cursor.getFloat(index);
+                    } else if (type == Double.class || type.getName().equals("double")) {
+                        value = cursor.getDouble(index);
+                    }
+                }else if(sqlDataType.equals(SQLFieldTypeEnum.TEXT.getTypeName())){
+                    if (type == Character.class || type.getName().equals("char")) {
+                        value = cursor.getString(index).charAt(0);
+                    } else  {
+                        value = cursor.getString(index);
+                    }
+                }else if(sqlDataType.equals(SQLFieldTypeEnum.BLOB.getTypeName())){
+
+                }else if(sqlDataType.equals(SQLFieldTypeEnum.DATE.getTypeName())){
+                       value = cursor.getString(index);
+                }else if(sqlDataType.equals(SQLFieldTypeEnum.NUMERIC.getTypeName())){
+
                 }
 
                 try {
@@ -347,26 +362,13 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
     }
 
     /**
-     * 获取表中所有数据
-     * @param orderSQL
-     * @return
-     */
-    public List<T> getAllDatas(String orderSQL){
-        SerachTableData serachTableData = getSerachTableData().setTableName(tableName);
-        serachTableData.setIsAddField(false);
-        String getAllTableDataSQL = serachTableData.getTableAllDataSQL(orderSQL);
-        Log.e("查询语句",getAllTableDataSQL);
-        return serachDatasBySQL(getAllTableDataSQL);
-    }
-
-    /**
      * 根据字段的名字和类型返回相应的数据库中的保存类型
      * example：int -> Integer
      * @param classFieldName
      * @param typeClass
      * @return
      */
-    protected abstract String getSQLFieldType(String classFieldName,Class typeClass);
+    protected abstract SQLFieldType getSQLFieldType(String classFieldName, Class typeClass);
     /**
      * 根据字段的名字和类型返回相应的数据库中的保存类型
      * example：int -> Integer
@@ -376,30 +378,29 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
      */
     protected abstract String getSQLFieldName(String classFieldName,Class typeClass);
     protected abstract Object setBooleanValue(String classFieldName,boolean value);
-    protected abstract String setBooleanSQLDataType(String classFieldName);
 
-    public String getSQlStringType(Class<?> ziDuanJavaType) {
-        String sqlType = "";
+    public SQLFieldTypeEnum getSQlStringType(Class<?> ziDuanJavaType) {
+        SQLFieldTypeEnum sqlType = null;
         if (ziDuanJavaType == Byte.class || ziDuanJavaType.getName().equals("byte")) {
-            sqlType = "integer";
+            sqlType = SQLFieldTypeEnum.INTEGER;
         } else if (ziDuanJavaType == Short.class || ziDuanJavaType.getName().equals("short")) {
-            sqlType = "integer";
+            sqlType = SQLFieldTypeEnum.INTEGER;
         } else if (ziDuanJavaType == Integer.class || ziDuanJavaType.getName().equals("int")) {
-            sqlType = "integer";
+            sqlType = SQLFieldTypeEnum.INTEGER;
         } else if (ziDuanJavaType == Long.class || ziDuanJavaType.getName().equals("long")) {
-            sqlType = "bigint";
+            sqlType = SQLFieldTypeEnum.BIG_INT;
         } else if (ziDuanJavaType == Float.class || ziDuanJavaType.getName().equals("float")) {
-            sqlType = "real";
+            sqlType = SQLFieldTypeEnum.REAL;
         } else if (ziDuanJavaType == Double.class || ziDuanJavaType.getName().equals("double")) {
-            sqlType = "real";
+            sqlType = SQLFieldTypeEnum.REAL;
         } else if (ziDuanJavaType == Boolean.class || ziDuanJavaType.getName().equals("boolean")) {
-            sqlType = setBooleanSQLDataType(ziDuanJavaType.getName());
+            sqlType = SQLFieldTypeEnum.INTEGER;
         } else if (ziDuanJavaType == Character.class || ziDuanJavaType.getName().equals("char")) {
-            sqlType = "text";
+            sqlType = SQLFieldTypeEnum.TEXT;
         } else if (ziDuanJavaType == String.class) {
-            sqlType = "text";
+            sqlType = SQLFieldTypeEnum.TEXT;
         } else {
-            sqlType = "no";
+            sqlType = SQLFieldTypeEnum.TEXT;
         }
         return sqlType;
     }

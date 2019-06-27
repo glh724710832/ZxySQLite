@@ -49,7 +49,12 @@ public class AddManyRowToTable extends BaseSql {
             if(valueList.get(i) instanceof String) {
                 String value = (String) valueList.get(i);
                 values.add("'"+value+"'");
-            }else {
+            }else if(valueList.get(i) instanceof Character){
+                Character character = (Character) valueList.get(i);
+                String value = String.valueOf(character);
+                values.add("'"+value+"'");
+            }
+            else {
                 values.add(valueList.get(i).toString());
             }
         }
