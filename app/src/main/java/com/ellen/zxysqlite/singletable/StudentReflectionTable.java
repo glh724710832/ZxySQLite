@@ -22,7 +22,7 @@ public class StudentReflectionTable extends ZxyReflectionTable<Student> {
 
     @Override
     protected SQLFieldType getSQLFieldType(String classFieldName, Class typeClass) {
-        SQLFieldType sqlFieldType = null;
+         SQLFieldType sqlFieldType = null;
         if(classFieldName.equals("date")){
             sqlFieldType = new SQLFieldType(SQLFieldTypeEnum.DATE,null);
         }else if(classFieldName.equals("isMan")){

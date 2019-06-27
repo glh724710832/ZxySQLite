@@ -1,6 +1,7 @@
 package com.ellen.zxysqlite;
 
 import android.content.res.Configuration;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,7 @@ import com.ellen.zxysqlite.createsql.where.WhereIn;
 import com.ellen.zxysqlite.singletable.StudentReflectionTable;
 import com.ellen.zxysqlite.table.reflection.ZxyReflectionTable;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,8 +65,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
         textView = findViewById(R.id.tv);
-        MySQLiteHelper mySQLiteHelper = new MySQLiteHelper(this, "library", null, 1);
-        final PhoneSQLite phoneSQLite = new PhoneSQLite(mySQLiteHelper.getWritableDatabase(), Phone.class);
+        File file = new File(Environment.getExternalStorageDirectory(),"ZxySQLite");
+        if(!file.exists()){
+            file.mkdirs();
+        }
+        MySQLiteHelper mySQLiteHelper = new MySQLiteHelper(this,file.getAbsolutePath(),"my",1);
+        final PhoneSQLite phoneSQLite = new PhoneSQLite(mySQLiteHelper.getWriteDataBase(), Phone.class);
         phoneSQLite.onCreateTable(new ZxyReflectionTable.OnCreateSQLiteCallback() {
             @Override
             public void onCreateTableBefore(String tableName, List<SQLField> sqlFieldList, String createSQL) {
@@ -85,11 +91,11 @@ public class MainActivity extends AppCompatActivity {
                 System system3 = new System("Android", 6);
                 System system4 = new System("IOS", 20);
                 System system5 = new System("Android", 8);
-                Phone phone1 = new Phone(1, "A-1", "5寸", 1799, system1);
-                Phone phone2 = new Phone(2, "A-2", "10寸", 1899, system2);
-                Phone phone3 = new Phone(3, "A-3", "8寸", 2799, system3);
-                Phone phone4 = new Phone(4, "A-4", "7寸", 8799, system4);
-                Phone phone5 = new Phone(5, "A-5", "6寸", 111799, system5);
+                Phone phone1 = new Phone(1, "A-1", "5寸", 1799.9f, system1);
+                Phone phone2 = new Phone(2, "A-2", "10寸", 1899.7f, system2);
+                Phone phone3 = new Phone(3, "A-3", "8寸", 2799.6f, system3);
+                Phone phone4 = new Phone(4, "A-4", "7寸", 8799.6f, system4);
+                Phone phone5 = new Phone(5, "A-5", "6寸", 111799.3f, system5);
                 phoneList.add(phone1);
                 phoneList.add(phone2);
                 phoneList.add(phone3);
@@ -109,5 +115,6 @@ public class MainActivity extends AppCompatActivity {
         for (Phone phone : phoneList) {
             Log.e("查询的数据", phone.toString());
         }
+
     }
 }

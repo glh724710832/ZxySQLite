@@ -5,20 +5,27 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.Nullable;
 
-public class MySQLiteHelper extends SQLiteOpenHelper {
+import com.ellen.zxysqlite.table.reflection.ZxyLibrary;
+
+public class MySQLiteHelper extends ZxyLibrary {
 
 
-    public MySQLiteHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+    public MySQLiteHelper(Context context, String name, int version) {
+        super(context, name, version);
+    }
+
+    public MySQLiteHelper(Context context, String libraryPath, String name, int version) {
+        super(context, libraryPath, name, version);
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
+    public void onZxySQLiteCreate(SQLiteDatabase db) {
 
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onZxySQLiteUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
+
 }
