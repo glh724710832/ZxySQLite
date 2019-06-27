@@ -9,15 +9,19 @@ public class Student {
     private boolean isMan = false;
     private String date = "2018-04-05";
     private Character nameOne = 'b';
+    private Teacher teacher;
+    private String[] projectName = {"语文","数学","英语"};
 
     public Student(){}
 
-    public Student(int id, String name, String sex, String phoneNumber, boolean isMan) {
+    public Student(int id, String name, String sex, String phoneNumber, boolean isMan,String teacherName) {
         this.id = id;
         this.name = name;
         this.sex = sex;
         this.phoneNumber = phoneNumber;
         this.isMan = isMan;
+        teacher = new Teacher();
+        teacher.setName(teacherName);
     }
 
     public int getId() {
@@ -74,5 +78,21 @@ public class Student {
 
     public void setNameOne(Character nameOne) {
         this.nameOne = nameOne;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
+    public String[] getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String[] projectName) {
+        this.projectName = projectName;
     }
 }

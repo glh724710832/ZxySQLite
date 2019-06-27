@@ -3,9 +3,11 @@ package com.ellen.zxysqlite.singletable;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.ellen.zxysqlite.Student;
+import com.ellen.zxysqlite.Teacher;
 import com.ellen.zxysqlite.createsql.helper.SQLFieldType;
 import com.ellen.zxysqlite.createsql.helper.SQLFieldTypeEnum;
 import com.ellen.zxysqlite.table.reflection.ZxyReflectionTable;
+import com.google.gson.Gson;
 
 public class StudentReflectionTable extends ZxyReflectionTable<Student> {
 
@@ -44,6 +46,35 @@ public class StudentReflectionTable extends ZxyReflectionTable<Student> {
             return "true";
         }else {
             return "false";
+        }
+    }
+
+    @Override
+    protected SQLFieldType conversion(String classFieldName, Class typeClass) {
+        return new SQLFieldType(SQLFieldTypeEnum.TEXT,null);
+    }
+
+    @Override
+    protected Object setConversionValue(Student student, String className, Class typeClass) {
+        if(className.equals("teacher")) {
+            Gson gson = new Gson();
+            return gson.toJson(student.getTeacher());
+        }else {
+            Gson gson = new Gson();
+            return gson.toJson(student.getProjectName());
+        }
+    }
+
+    @Override
+    protected Object resumeConversionObject(Object value, String className, Class typeClass) {
+        if(className.equals("teacher")) {
+            String json = (String) value;
+            Teacher teacher = new Gson().fromJson(json, Teacher.class);
+            return teacher;
+        }else {
+            String json = (String) value;
+            String[] strs = new Gson().fromJson(json,String[].class);
+            return strs;
         }
     }
 

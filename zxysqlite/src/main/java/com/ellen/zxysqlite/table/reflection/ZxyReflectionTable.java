@@ -32,9 +32,9 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
     private List<SQLField> sqlFieldList;
     private String tableName;
     private ReflactionHelper<T> reflactionHelper;
-    private HashMap<SQLField,Field> sqlNameMap;
+    private HashMap<SQLField, Field> sqlNameMap;
 
-    public ZxyReflectionTable(SQLiteDatabase db,Class<? extends T> dataClass) {
+    public ZxyReflectionTable(SQLiteDatabase db, Class<? extends T> dataClass) {
         super(db);
         this.dataClass = dataClass;
         this.tableName = dataClass.getSimpleName();
@@ -43,7 +43,7 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
         getFields();
     }
 
-    public ZxyReflectionTable(SQLiteDatabase db,Class<? extends T> dataClass,String autoTableName) {
+    public ZxyReflectionTable(SQLiteDatabase db, Class<? extends T> dataClass, String autoTableName) {
         super(db);
         this.dataClass = dataClass;
         this.tableName = autoTableName;
@@ -55,28 +55,58 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
     /**
      * 通过反射获取类的所有属性
      */
-    private void getFields(){
+    private void getFields() {
         sqlFieldList = new ArrayList<>();
-        List<Field> fieldList = reflactionHelper.getClassFieldList(dataClass,false);
-        for(Field field:fieldList) {
-            String fieldType = getSQLFieldType(field.getName(),field.getType()).getSQLFieldTypeString();
-            String fieldName = getSQLFieldName(field.getName(),field.getType());
-            SQLField sqlField = SQLField.getOrdinaryField(fieldName,fieldType);
-            sqlNameMap.put(sqlField,field);
+        List<Field> fieldList = reflactionHelper.getClassFieldList(dataClass, false);
+        for (Field field : fieldList) {
+            String fieldType = null;
+            String fieldName = null;
+            if (isBasicType(field)) {
+                fieldType = getSQLFieldType(field.getName(), field.getType()).getSQLFieldTypeString();
+            } else {
+                fieldType = conversion(field.getName(), field.getType()).getSQLFieldTypeString();
+            }
+            fieldName = getSQLFieldName(field.getName(), field.getType());
+            SQLField sqlField = SQLField.getOrdinaryField(fieldName, fieldType);
+            sqlNameMap.put(sqlField, field);
             sqlFieldList.add(sqlField);
         }
     }
 
-    public void onCreateTable(){
-        String createTableSql =  getCreateTable()
+    private boolean isBasicType(Field field) {
+        boolean b = false;
+        if (field.getType() == Byte.class || field.getType().getName().equals("byte")) {
+            b = true;
+        } else if (field.getType() == Short.class || field.getType().getName().equals("short")) {
+            b = true;
+        } else if (field.getType() == Integer.class || field.getType().getName().equals("int")) {
+            b = true;
+        } else if (field.getType() == Long.class || field.getType().getName().equals("long")) {
+            b = true;
+        } else if (field.getType() == Float.class || field.getType().getName().equals("float")) {
+            b = true;
+        } else if (field.getType() == Double.class || field.getType().getName().equals("double")) {
+            b = true;
+        } else if (field.getType() == Boolean.class || field.getType().getName().equals("boolean")) {
+            b = true;
+        } else if (field.getType() == Character.class || field.getType().getName().equals("char")) {
+            b = true;
+        } else if (field.getType() == String.class) {
+            b = true;
+        }
+        return b;
+    }
+
+    public void onCreateTable() {
+        String createTableSql = getCreateTable()
                 .setTableName(tableName)
                 .addField(sqlFieldList)
                 .createSQL();
         getSQLiteDatabase().execSQL(createTableSql);
     }
 
-    public void onCreateTableIfNotExits(){
-        String createTableSql =  getCreateTable()
+    public void onCreateTableIfNotExits() {
+        String createTableSql = getCreateTable()
                 .setTableName(tableName)
                 .addField(sqlFieldList)
                 .createSQLIfNotExists();
@@ -84,44 +114,44 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
         getSQLiteDatabase().execSQL(createTableSql);
     }
 
-    public void onCreateTable(OnCreateSQLiteCallback onCreateSQLiteCallback){
+    public void onCreateTable(OnCreateSQLiteCallback onCreateSQLiteCallback) {
         boolean isException = false;
-        String createTableSql =  getCreateTable()
+        String createTableSql = getCreateTable()
                 .setTableName(tableName)
                 .addField(sqlFieldList)
                 .createSQL();
-        onCreateSQLiteCallback.onCreateTableBefore(tableName,sqlFieldList,createTableSql);
+        onCreateSQLiteCallback.onCreateTableBefore(tableName, sqlFieldList, createTableSql);
         try {
             getSQLiteDatabase().execSQL(createTableSql);
-        }catch (SQLException e){
-            onCreateSQLiteCallback.onCreateTableFailure(e.getMessage(),tableName,sqlFieldList,createTableSql);
+        } catch (SQLException e) {
+            onCreateSQLiteCallback.onCreateTableFailure(e.getMessage(), tableName, sqlFieldList, createTableSql);
             isException = true;
         }
-        if(!isException)
-        onCreateSQLiteCallback.onCreateTableSuccess(tableName,sqlFieldList,createTableSql);
+        if (!isException)
+            onCreateSQLiteCallback.onCreateTableSuccess(tableName, sqlFieldList, createTableSql);
     }
 
-    public void onCreateTableIfNotExits(OnCreateSQLiteCallback onCreateSQLiteCallback){
+    public void onCreateTableIfNotExits(OnCreateSQLiteCallback onCreateSQLiteCallback) {
         boolean isException = false;
-        String createTableSql =  getCreateTable()
+        String createTableSql = getCreateTable()
                 .setTableName(tableName)
                 .addField(sqlFieldList)
                 .createSQLIfNotExists();
-        onCreateSQLiteCallback.onCreateTableBefore(tableName,sqlFieldList,createTableSql);
+        onCreateSQLiteCallback.onCreateTableBefore(tableName, sqlFieldList, createTableSql);
         try {
             getSQLiteDatabase().execSQL(createTableSql);
-        }catch (SQLException e){
-            onCreateSQLiteCallback.onCreateTableFailure(e.getMessage(),tableName,sqlFieldList,createTableSql);
+        } catch (SQLException e) {
+            onCreateSQLiteCallback.onCreateTableFailure(e.getMessage(), tableName, sqlFieldList, createTableSql);
             isException = true;
         }
-        if(!isException)
-        onCreateSQLiteCallback.onCreateTableSuccess(tableName,sqlFieldList,createTableSql);
+        if (!isException)
+            onCreateSQLiteCallback.onCreateTableSuccess(tableName, sqlFieldList, createTableSql);
     }
 
     /**
      * 重命名表
      */
-    public void reNameTable(String newName){
+    public void reNameTable(String newName) {
         boolean isException = false;
         String reNameTableSql = getUpdateTableName()
                 .setOldTableName(tableName)
@@ -129,20 +159,21 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
                 .createSQL();
         try {
             exeSQL(reNameTableSql);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             isException = true;
         }
-        if(!isException){
+        if (!isException) {
             this.tableName = newName;
         }
     }
 
     /**
      * 重命名表
+     *
      * @param newName
      * @param onRenameTableCallbcak
      */
-    public void reNameTable(String newName,OnRenameTableCallbcak onRenameTableCallbcak){
+    public void reNameTable(String newName, OnRenameTableCallbcak onRenameTableCallbcak) {
         boolean isException = false;
         String reNameTableSql = getUpdateTableName()
                 .setOldTableName(tableName)
@@ -150,49 +181,55 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
                 .createSQL();
         try {
             exeSQL(reNameTableSql);
-        }catch (SQLException e){
-           isException = true;
-           onRenameTableCallbcak.onRenameFailure(e.getMessage(),tableName,newName,reNameTableSql);
+        } catch (SQLException e) {
+            isException = true;
+            onRenameTableCallbcak.onRenameFailure(e.getMessage(), tableName, newName, reNameTableSql);
         }
-        if(!isException){
+        if (!isException) {
             this.tableName = newName;
-            onRenameTableCallbcak.onRenameSuccess(tableName,newName,reNameTableSql);
+            onRenameTableCallbcak.onRenameSuccess(tableName, newName, reNameTableSql);
         }
     }
 
-    public void deleteTable(String tableName){
+    public void deleteTable(String tableName) {
         String deleteTableSQL = getDeleteTable().setTableName(tableName).createSQL();
         exeSQL(deleteTableSQL);
     }
 
-    public void deleteTable(String tableName,OnDeleteTableCallback onDeleteTableCallback){
+    public void deleteTable(String tableName, OnDeleteTableCallback onDeleteTableCallback) {
         boolean isException = false;
         String deleteTableSQL = getDeleteTable().setTableName(tableName).createSQL();
         try {
             exeSQL(deleteTableSQL);
-        }catch (Exception e){
+        } catch (Exception e) {
             isException = true;
-            onDeleteTableCallback.onDeleteTableFailure(e.getMessage(),deleteTableSQL);
+            onDeleteTableCallback.onDeleteTableFailure(e.getMessage(), deleteTableSQL);
         }
-        if(!isException){
+        if (!isException) {
             onDeleteTableCallback.onDeleteTableSuccess(deleteTableSQL);
         }
     }
 
     /**
      * 保存数据(单条)
+     *
      * @param data
      */
-    public void saveData(T data){
+    public void saveData(T data) {
         AddSingleRowToTable addSingleRowToTable = getAddSingleRowToTable();
         addSingleRowToTable.setTableName(tableName);
-        for(int i = 0;i<sqlFieldList.size();i++){
+        for (int i = 0; i < sqlFieldList.size(); i++) {
             Field field = sqlNameMap.get(sqlFieldList.get(i));
-            Object value = reflactionHelper.getValue(data,field);
-            if(value instanceof Boolean){
-                value = setBooleanValue(field.getName(),(Boolean) value);
+            Object value = null;
+            if (isBasicType(field)) {
+                value = reflactionHelper.getValue(data, field);
+                if (value instanceof Boolean) {
+                    value = setBooleanValue(field.getName(), (Boolean) value);
+                }
+            } else {
+                value = setConversionValue(data, field.getName(), field.getType());
             }
-            addSingleRowToTable.addData(new Value(sqlFieldList.get(i).getName(),value));
+            addSingleRowToTable.addData(new Value(sqlFieldList.get(i).getName(), value));
         }
         String addDataSql = addSingleRowToTable.createSQL();
         exeSQL(addDataSql);
@@ -200,19 +237,25 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
 
     /**
      * 保存数据(多条)
+     *
      * @param dataList
      */
-    public void saveData(List<T> dataList){
+    public void saveData(List<T> dataList) {
         AddManyRowToTable addManyRowToTable = getAddManyRowToTable();
         addManyRowToTable.setTableName(tableName);
         addManyRowToTable.addFieldList(sqlFieldList);
-        for(int i=0;i<dataList.size();i++){
+        for (int i = 0; i < dataList.size(); i++) {
             List list = new ArrayList();
-            for(int j =0;j<sqlFieldList.size();j++) {
+            for (int j = 0; j < sqlFieldList.size(); j++) {
                 Field field = sqlNameMap.get(sqlFieldList.get(j));
-                Object value = reflactionHelper.getValue(dataList.get(i), field);
-                if (value instanceof Boolean) {
-                    value = setBooleanValue(field.getName(),(Boolean) value);
+                Object value = null;
+                if (isBasicType(field)) {
+                    value = reflactionHelper.getValue(dataList.get(i), field);
+                    if (value instanceof Boolean) {
+                        value = setBooleanValue(field.getName(), (Boolean) value);
+                    }
+                } else {
+                    value = setConversionValue(dataList.get(i), field.getName(), field.getType());
                 }
                 list.add(value);
             }
@@ -225,9 +268,10 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
     /**
      * 删除
      * 建议使用Where系列类生产Where SQL语句
+     *
      * @param whereSQL
      */
-    public void delete(String whereSQL){
+    public void delete(String whereSQL) {
         String deleteSQL = getDeleteTableDataRow().setTableName(tableName).createSQLAutoWhere(whereSQL);
         exeSQL(deleteSQL);
     }
@@ -235,7 +279,7 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
     /**
      * 清空数据
      */
-    public void clear(){
+    public void clear() {
         String clearTableSQL = getDeleteTableDataRow().setTableName(tableName).createDeleteAllDataSQL();
         exeSQL(clearTableSQL);
     }
@@ -243,20 +287,21 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
     /**
      * 修改数据
      * 建议使用Where系列类生产Where SQL语句
+     *
      * @param t
      * @param whereSQL
      */
-    public void update(T t,String whereSQL){
+    public void update(T t, String whereSQL) {
         UpdateTableDataRow updateTableDataRow = getUpdateTableDataRow();
         updateTableDataRow.setTableName(tableName);
-        for(int i=0;i<sqlFieldList.size();i++){
+        for (int i = 0; i < sqlFieldList.size(); i++) {
             String fieldName = sqlFieldList.get(i).getName();
             Field field = sqlNameMap.get(sqlFieldList.get(i));
-            Object value = reflactionHelper.getValue(t,field);
-            if(value instanceof Boolean){
-                value = setBooleanValue(field.getName(),(Boolean) value);
+            Object value = reflactionHelper.getValue(t, field);
+            if (value instanceof Boolean) {
+                value = setBooleanValue(field.getName(), (Boolean) value);
             }
-            updateTableDataRow.addSetValue(fieldName,value);
+            updateTableDataRow.addSetValue(fieldName, value);
         }
         String updateSql = updateTableDataRow.createSQLAutoWhere(whereSQL);
         exeSQL(updateSql);
@@ -264,35 +309,36 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
 
     /**
      * 获取表中所有数据
+     *
      * @param orderSQL
      * @return
      */
-    public List<T> getAllDatas(String orderSQL){
+    public List<T> getAllDatas(String orderSQL) {
         SerachTableData serachTableData = getSerachTableData().setTableName(tableName);
         serachTableData.setIsAddField(false);
         String getAllTableDataSQL = serachTableData.getTableAllDataSQL(orderSQL);
-        Log.e("查询语句",getAllTableDataSQL);
+        Log.e("查询语句", getAllTableDataSQL);
         return serachDatasBySQL(getAllTableDataSQL);
     }
 
-    public List<T> serach(String whereSQL,String orderSQL){
+    public List<T> serach(String whereSQL, String orderSQL) {
         List<T> dataList = new ArrayList<>();
         SerachTableData serachTableData = getSerachTableData().setTableName(tableName);
         serachTableData.setIsAddField(false);
         String serachSQL = null;
-        if(orderSQL != null) {
-             serachSQL = serachTableData.createSQLAutoWhere(whereSQL, orderSQL);
-        }else {
+        if (orderSQL != null) {
+            serachSQL = serachTableData.createSQLAutoWhere(whereSQL, orderSQL);
+        } else {
             serachSQL = serachTableData.createSQLAutoWhere(whereSQL);
         }
-        Log.e("查询语句",serachSQL);
+        Log.e("查询语句", serachSQL);
         return serachDatasBySQL(serachSQL);
     }
 
-    private List<T> serachDatasBySQL(String sql){
+    private List<T> serachDatasBySQL(String sql) {
         List<T> dataList = new ArrayList<>();
         Cursor cursor = serachBySQL(sql);
-        while (cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             T t = null;
             Constructor constructors = null;
             try {
@@ -308,46 +354,57 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
             } catch (InvocationTargetException e) {
                 e.printStackTrace();
             }
-            for(int i=0;i<sqlFieldList.size();i++) {
+            for (int i = 0; i < sqlFieldList.size(); i++) {
                 Field field = sqlNameMap.get(sqlFieldList.get(i));
                 int index = cursor.getColumnIndex(sqlFieldList.get(i).getName());
-                String sqlDataType = getSQLFieldType(field.getName(),field.getType()).getTypeString();
+                String sqlDataType = null;
+                if(isBasicType(field)) {
+                     sqlDataType = getSQLFieldType(field.getName(), field.getType()).getTypeString();
+                }else {
+                    sqlDataType = conversion(field.getName(),field.getType()).getTypeString();
+                }
                 Class type = field.getType();
                 Object value = null;
-                if(sqlDataType.equals(SQLFieldTypeEnum.INTEGER.getTypeName())){
+                if (sqlDataType.equals(SQLFieldTypeEnum.INTEGER.getTypeName())) {
                     value = cursor.getInt(index);
-                }else if(sqlDataType.equals(SQLFieldTypeEnum.BIG_INT.getTypeName())){
+                } else if (sqlDataType.equals(SQLFieldTypeEnum.BIG_INT.getTypeName())) {
                     value = cursor.getLong(index);
-                }else if(sqlDataType.equals(SQLFieldTypeEnum.REAL.getTypeName())){
+                } else if (sqlDataType.equals(SQLFieldTypeEnum.REAL.getTypeName())) {
                     if (type == Float.class || type.getName().equals("float")) {
                         value = cursor.getFloat(index);
                     } else if (type == Double.class || type.getName().equals("double")) {
                         value = cursor.getDouble(index);
+                    }else {
+                        value = cursor.getDouble(index);
                     }
-                }else if(sqlDataType.equals(SQLFieldTypeEnum.TEXT.getTypeName())){
+                } else if (sqlDataType.equals(SQLFieldTypeEnum.TEXT.getTypeName())) {
                     if (type == Character.class || type.getName().equals("char")) {
                         value = cursor.getString(index).charAt(0);
-                    } else  {
+                    } else {
                         value = cursor.getString(index);
                     }
-                }else if(sqlDataType.equals(SQLFieldTypeEnum.BLOB.getTypeName())){
+                } else if (sqlDataType.equals(SQLFieldTypeEnum.BLOB.getTypeName())) {
 
-                }else if(sqlDataType.equals(SQLFieldTypeEnum.DATE.getTypeName())){
-                       value = cursor.getString(index);
-                }else if(sqlDataType.equals(SQLFieldTypeEnum.NUMERIC.getTypeName())){
+                } else if (sqlDataType.equals(SQLFieldTypeEnum.DATE.getTypeName())) {
+                    value = cursor.getString(index);
+                } else if (sqlDataType.equals(SQLFieldTypeEnum.NUMERIC.getTypeName())) {
 
                 }
 
                 try {
-                    if(field.getType() == Boolean.class || field.getType().getName().equals("boolean")) {
-                        Object booleanTrueValue = setBooleanValue(field.getName(),true);
-                        if(booleanTrueValue.equals(value)){
-                            field.set(t, true);
-                        }else {
-                            field.set(t,false);
+                    if(isBasicType(field)) {
+                        if (field.getType() == Boolean.class || field.getType().getName().equals("boolean")) {
+                            Object booleanTrueValue = setBooleanValue(field.getName(), true);
+                            if (booleanTrueValue.equals(value)) {
+                                field.set(t, true);
+                            } else {
+                                field.set(t, false);
+                            }
+                        } else {
+                            field.set(t, value);
                         }
                     }else {
-                        field.set(t, value);
+                        field.set(t,resumeConversionObject(value,field.getName(),field.getType()));
                     }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
@@ -355,7 +412,7 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
             }
             dataList.add(t);
         }
-        if(cursor != null){
+        if (cursor != null) {
             cursor.close();
         }
         return dataList;
@@ -364,20 +421,30 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
     /**
      * 根据字段的名字和类型返回相应的数据库中的保存类型
      * example：int -> Integer
+     *
      * @param classFieldName
      * @param typeClass
      * @return
      */
     protected abstract SQLFieldType getSQLFieldType(String classFieldName, Class typeClass);
+
     /**
      * 根据字段的名字和类型返回相应的数据库中的保存类型
      * example：int -> Integer
+     *
      * @param classFieldName
      * @param typeClass
      * @return
      */
-    protected abstract String getSQLFieldName(String classFieldName,Class typeClass);
-    protected abstract Object setBooleanValue(String classFieldName,boolean value);
+    protected abstract String getSQLFieldName(String classFieldName, Class typeClass);
+
+    protected abstract Object setBooleanValue(String classFieldName, boolean value);
+
+    protected abstract SQLFieldType conversion(String classFieldName, Class typeClass);
+
+    protected abstract <E> E setConversionValue(T t, String className, Class typeClass);
+
+    protected abstract <E> E resumeConversionObject(Object value,String className,Class typeClass);
 
     public SQLFieldTypeEnum getSQlStringType(Class<?> ziDuanJavaType) {
         SQLFieldTypeEnum sqlType = null;
@@ -405,19 +472,23 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
         return sqlType;
     }
 
-    public interface OnCreateSQLiteCallback{
-        void onCreateTableBefore(String tableName,List<SQLField> sqlFieldList,String createSQL);
-        void onCreateTableFailure(String errMessage,String tableName,List<SQLField> sqlFieldList,String createSQL);
-        void onCreateTableSuccess(String tableName,List<SQLField> sqlFieldList,String createSQL);
+    public interface OnCreateSQLiteCallback {
+        void onCreateTableBefore(String tableName, List<SQLField> sqlFieldList, String createSQL);
+
+        void onCreateTableFailure(String errMessage, String tableName, List<SQLField> sqlFieldList, String createSQL);
+
+        void onCreateTableSuccess(String tableName, List<SQLField> sqlFieldList, String createSQL);
     }
 
-    public interface OnRenameTableCallbcak{
-        void onRenameFailure(String errMessage,String currentName,String newName,String reNameTableSQL);
-        void onRenameSuccess(String oldName,String newName,String reNameTableSQL);
+    public interface OnRenameTableCallbcak {
+        void onRenameFailure(String errMessage, String currentName, String newName, String reNameTableSQL);
+
+        void onRenameSuccess(String oldName, String newName, String reNameTableSQL);
     }
 
-    public interface OnDeleteTableCallback{
-        void onDeleteTableFailure(String errMessage,String deleteTableSQL);
+    public interface OnDeleteTableCallback {
+        void onDeleteTableFailure(String errMessage, String deleteTableSQL);
+
         void onDeleteTableSuccess(String deleteTableSQL);
     }
 }

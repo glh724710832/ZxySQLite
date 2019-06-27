@@ -80,27 +80,19 @@ public class MainActivity extends AppCompatActivity {
             public void onCreateTableSuccess(String tableName, List<SQLField> sqlFieldList, String createSQL) {
                 Log.e("Ellen创建表成功",createSQL);
                 List<Student> studentList = new ArrayList<>();
-                studentList.add(new Student(1,"ellen1","男","18272167571",true));
-                studentList.add(new Student(2,"ellen2","女","18272167572",false));
-                studentList.add(new Student(3,"ellen3","男","18272167573",true));
-                studentList.add(new Student(4,"ellen4","男","18272167574",true));
-                studentList.add(new Student(5,"ellen5","女","18272167575",false));
+                studentList.add(new Student(1,"ellen1","男","18272167571",true,"A"));
+                studentList.add(new Student(2,"ellen2","女","18272167572",false,"B"));
+                studentList.add(new Student(3,"ellen3","男","18272167573",true,"C"));
+                studentList.add(new Student(4,"ellen4","男","18272167574",true,"D"));
+                studentList.add(new Student(5,"ellen5","女","18272167575",false,"E"));
                 zxyReflectionTable.saveData(studentList);
             }
         });
-        String whereSQL = Where.getInstance(false)
-                .addAndWhereValue("nameOne", WhereSymbolEnum.EQUAL,"e")
-                .addAndWhereValue("id",WhereSymbolEnum.EQUAL,2)
-                .createSQL();
-        String updateSQL = UpdateTableDataRow.getInstance()
-                .setTableName("my_student")
-                .addSetValue("nameOne",'a')
-                .createSQLAutoWhere(whereSQL);
-        zxyReflectionTable.exeSQL(updateSQL);
+
         String orderSQL = Order.getInstance(false).setFirstOrderFieldName("id").setIsDesc(true).createSQL();
         List<Student> studentList = zxyReflectionTable.getAllDatas(orderSQL);
         for(Student student:studentList){
-            Log.e("查询的数据",student.getName()+":"+student.getId()+":"+student.isMan()+":"+student.getNameOne());
+            Log.e("查询的数据",student.getName()+":"+student.getId()+":"+student.isMan()+":"+student.getNameOne()+":"+student.getTeacher().getPhoneNumber());
         }
     }
 
