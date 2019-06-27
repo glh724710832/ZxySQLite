@@ -61,7 +61,7 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
         for (Field field : fieldList) {
             String fieldType = null;
             String fieldName = null;
-            if (isBasicType(field)) {
+            if (reflactionHelper.isBasicType(field)) {
                 fieldType = getSQLFieldType(field.getName(), field.getType()).getSQLFieldTypeString();
             } else {
                 fieldType = conversion(field.getName(), field.getType()).getSQLFieldTypeString();
@@ -71,30 +71,6 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
             sqlNameMap.put(sqlField, field);
             sqlFieldList.add(sqlField);
         }
-    }
-
-    private boolean isBasicType(Field field) {
-        boolean b = false;
-        if (field.getType() == Byte.class || field.getType().getName().equals("byte")) {
-            b = true;
-        } else if (field.getType() == Short.class || field.getType().getName().equals("short")) {
-            b = true;
-        } else if (field.getType() == Integer.class || field.getType().getName().equals("int")) {
-            b = true;
-        } else if (field.getType() == Long.class || field.getType().getName().equals("long")) {
-            b = true;
-        } else if (field.getType() == Float.class || field.getType().getName().equals("float")) {
-            b = true;
-        } else if (field.getType() == Double.class || field.getType().getName().equals("double")) {
-            b = true;
-        } else if (field.getType() == Boolean.class || field.getType().getName().equals("boolean")) {
-            b = true;
-        } else if (field.getType() == Character.class || field.getType().getName().equals("char")) {
-            b = true;
-        } else if (field.getType() == String.class) {
-            b = true;
-        }
-        return b;
     }
 
     public void onCreateTable() {
@@ -221,7 +197,7 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
         for (int i = 0; i < sqlFieldList.size(); i++) {
             Field field = sqlNameMap.get(sqlFieldList.get(i));
             Object value = null;
-            if (isBasicType(field)) {
+            if (reflactionHelper.isBasicType(field)) {
                 value = reflactionHelper.getValue(data, field);
                 if (value instanceof Boolean) {
                     value = setBooleanValue(field.getName(), (Boolean) value);
@@ -249,7 +225,7 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
             for (int j = 0; j < sqlFieldList.size(); j++) {
                 Field field = sqlNameMap.get(sqlFieldList.get(j));
                 Object value = null;
-                if (isBasicType(field)) {
+                if (reflactionHelper.isBasicType(field)) {
                     value = reflactionHelper.getValue(dataList.get(i), field);
                     if (value instanceof Boolean) {
                         value = setBooleanValue(field.getName(), (Boolean) value);
@@ -358,7 +334,7 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
                 Field field = sqlNameMap.get(sqlFieldList.get(i));
                 int index = cursor.getColumnIndex(sqlFieldList.get(i).getName());
                 String sqlDataType = null;
-                if(isBasicType(field)) {
+                if(reflactionHelper.isBasicType(field)) {
                      sqlDataType = getSQLFieldType(field.getName(), field.getType()).getTypeString();
                 }else {
                     sqlDataType = conversion(field.getName(),field.getType()).getTypeString();
@@ -392,7 +368,7 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
                 }
 
                 try {
-                    if(isBasicType(field)) {
+                    if(reflactionHelper.isBasicType(field)) {
                         if (field.getType() == Boolean.class || field.getType().getName().equals("boolean")) {
                             Object booleanTrueValue = setBooleanValue(field.getName(), true);
                             if (booleanTrueValue.equals(value)) {

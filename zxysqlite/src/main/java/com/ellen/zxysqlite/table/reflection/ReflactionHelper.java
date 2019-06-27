@@ -39,4 +39,28 @@ public class ReflactionHelper<T> {
         return value;
     }
 
+    public boolean isBasicType(Field field) {
+        boolean b = false;
+        if (field.getType() == Byte.class || field.getType().getName().equals("byte")) {
+            b = true;
+        } else if (field.getType() == Short.class || field.getType().getName().equals("short")) {
+            b = true;
+        } else if (field.getType() == Integer.class || field.getType().getName().equals("int")) {
+            b = true;
+        } else if (field.getType() == Long.class || field.getType().getName().equals("long")) {
+            b = true;
+        } else if (field.getType() == Float.class || field.getType().getName().equals("float")) {
+            b = true;
+        } else if (field.getType() == Double.class || field.getType().getName().equals("double")) {
+            b = true;
+        } else if (field.getType() == Boolean.class || field.getType().getName().equals("boolean")) {
+            b = true;
+        } else if (field.getType() == Character.class || field.getType().getName().equals("char")) {
+            b = true;
+        } else if (field.getType() == String.class) {
+            b = true;
+        }
+        return b;
+    }
+
 }
