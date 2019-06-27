@@ -17,10 +17,16 @@ public class ReflactionHelper<T> {
                 //过滤掉静态的字段
                 boolean isStatic = Modifier.isStatic(field.getModifiers());
                 if(!isStatic) {
-                    fieldList.add(field);
+                    Ignore ignore = field.getAnnotation(Ignore.class);
+                    if(ignore == null){
+                        fieldList.add(field);
+                    }
                 }else {
                     if(isAddStatic){
-                        fieldList.add(field);
+                        Ignore ignore = field.getAnnotation(Ignore.class);
+                        if(ignore == null){
+                            fieldList.add(field);
+                        }
                     }
                 }
             }

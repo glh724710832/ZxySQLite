@@ -67,7 +67,14 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
                 fieldType = conversion(field.getName(), field.getType()).getSQLFieldTypeString();
             }
             fieldName = getSQLFieldName(field.getName(), field.getType());
-            SQLField sqlField = SQLField.getOrdinaryField(fieldName, fieldType);
+            Primarykey primarykey = field.getAnnotation(Primarykey.class);
+            SQLField sqlField = null;
+            if (primarykey != null) {
+                //这里是主键
+                sqlField = SQLField.getPrimaryKeyField(fieldName, fieldType,false);
+            }else {
+                sqlField = SQLField.getOrdinaryField(fieldName, fieldType);
+            }
             sqlNameMap.put(sqlField, field);
             sqlFieldList.add(sqlField);
         }
@@ -396,7 +403,7 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
 
     /**
      * 根据字段的名字和类型返回相应的数据库中的保存类型
-     * example：int -> Integer
+     * example：boolean -> Integer
      *
      * @param classFieldName
      * @param typeClass

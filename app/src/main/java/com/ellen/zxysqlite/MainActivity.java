@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         String orderSQL = Order.getInstance(false).setFirstOrderFieldName("id").setIsDesc(true).createSQL();
         List<Student> studentList = zxyReflectionTable.getAllDatas(orderSQL);
         for(Student student:studentList){
-            Log.e("查询的数据",student.getName()+":"+student.getId()+":"+student.isMan()+":"+student.getNameOne()+":"+student.getTeacher().getPhoneNumber());
+            Log.e("查询的数据",student.getName()+":"+student.getId()+":"+student.isMan()+":"+student.getNameOne());
         }
     }
 
