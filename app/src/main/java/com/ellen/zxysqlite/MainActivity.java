@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         textView = findViewById(R.id.tv);
         MySQLiteHelper mySQLiteHelper = new MySQLiteHelper(this, "library", null, 1);
         final PhoneSQLite phoneSQLite = new PhoneSQLite(mySQLiteHelper.getWritableDatabase(), Phone.class);
-        phoneSQLite.onCreateTableIfNotExits(new ZxyReflectionTable.OnCreateSQLiteCallback() {
+        phoneSQLite.onCreateTable(new ZxyReflectionTable.OnCreateSQLiteCallback() {
             @Override
             public void onCreateTableBefore(String tableName, List<SQLField> sqlFieldList, String createSQL) {
 
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 phoneSQLite.saveData(phoneList);
             }
         });
-        String orderSQL = Order.getInstance(false).setFirstOrderFieldName("id").setIsDesc(true).createSQL();
+        String orderSQL = Order.getInstance(false).setFirstOrderFieldName("id").setIsDesc(false).createSQL();
         List<Phone> phoneList = phoneSQLite.getAllDatas(orderSQL);
         for (Phone phone : phoneList) {
             Log.e("查询的数据", phone.toString());

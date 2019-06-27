@@ -64,7 +64,7 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
             if (reflactionHelper.isBasicType(field)) {
                 fieldType = getSQLFieldType(field.getName(), field.getType()).getSQLFieldTypeString();
             } else {
-                fieldType = conversion(field.getName(), field.getType()).getSQLFieldTypeString();
+                fieldType = conversionSQLiteType(field.getName(), field.getType()).getSQLFieldTypeString();
             }
             fieldName = getSQLFieldName(field.getName(), field.getType());
             Primarykey primarykey = field.getAnnotation(Primarykey.class);
@@ -343,7 +343,7 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
                 if(reflactionHelper.isBasicType(field)) {
                      sqlDataType = getSQLFieldType(field.getName(), field.getType()).getTypeString();
                 }else {
-                    sqlDataType = conversion(field.getName(),field.getType()).getTypeString();
+                    sqlDataType = conversionSQLiteType(field.getName(),field.getType()).getTypeString();
                 }
                 Class type = field.getType();
                 Object value = null;
@@ -438,11 +438,33 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
 
     protected abstract Object setBooleanValue(String classFieldName, boolean value);
 
-    protected abstract SQLFieldType conversion(String classFieldName, Class typeClass);
+    /**
+     * 非基本类型转换为使用者自定义的类型
+     * @param classFieldName
+     * @param typeClass
+     * @return
+     */
+    protected abstract SQLFieldType conversionSQLiteType(String classFieldName, Class typeClass);
 
-    protected abstract <E> E setConversionValue(T t, String className, Class typeClass);
+    /**
+     *  将非基本类型的值转换为数据库中存储的值
+     * @param t
+     * @param classFieldName
+     * @param typeClass
+     * @param <E>
+     * @return
+     */
+    protected abstract <E> E setConversionValue(T t, String classFieldName, Class typeClass);
 
-    protected abstract <E> E resumeConversionObject(Object value,String className,Class typeClass);
+    /**
+     * 数据库中数据恢复为转换类时回调
+     * @param value
+     * @param classFieldName
+     * @param typeClass
+     * @param <E>
+     * @return
+     */
+    protected abstract <E> E resumeConversionObject(Object value,String classFieldName,Class typeClass);
 
     public SQLFieldTypeEnum getSQlStringType(Class<?> ziDuanJavaType) {
         SQLFieldTypeEnum sqlType = null;
