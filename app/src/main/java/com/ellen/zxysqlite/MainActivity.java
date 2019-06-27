@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
         //创建表的SQL语句
         String sql = CreateTable.getInstance()
                 .setTableName("student")
-                .addField(SQLField.getPrimaryKeyField("id","int",true))
-                .addField(SQLField.getNotNullContainsDefaultValueField("name","text","阿三"))
-                .addField(SQLField.getOrdinaryField("sex","text"))
+                .addField(SQLField.getPrimaryKeyField("id", "int", true))
+                .addField(SQLField.getNotNullContainsDefaultValueField("name", "text", "阿三"))
+                .addField(SQLField.getOrdinaryField("sex", "text"))
                 .createSQLIfNotExists();
         //textView.setText(sql);
         initView();
@@ -61,11 +61,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void initView(){
+    private void initView() {
         textView = findViewById(R.id.tv);
-        MySQLiteHelper mySQLiteHelper = new MySQLiteHelper(this,"library",null,1);
-        final StudentReflectionTable zxyReflectionTable = new StudentReflectionTable(mySQLiteHelper.getReadableDatabase(),Student.class,"my_student");
-        zxyReflectionTable.onCreateTable(new ZxyReflectionTable.OnCreateSQLiteCallback() {
+        MySQLiteHelper mySQLiteHelper = new MySQLiteHelper(this, "library", null, 1);
+        final PhoneSQLite phoneSQLite = new PhoneSQLite(mySQLiteHelper.getWritableDatabase(), Phone.class);
+        phoneSQLite.onCreateTableIfNotExits(new ZxyReflectionTable.OnCreateSQLiteCallback() {
             @Override
             public void onCreateTableBefore(String tableName, List<SQLField> sqlFieldList, String createSQL) {
 
@@ -73,27 +73,35 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onCreateTableFailure(String errMessage, String tableName, List<SQLField> sqlFieldList, String createSQL) {
-                Log.e("Ellen失败",tableName+":"+createSQL);
+
             }
 
             @Override
             public void onCreateTableSuccess(String tableName, List<SQLField> sqlFieldList, String createSQL) {
-                Log.e("Ellen创建表成功",createSQL);
-                List<Student> studentList = new ArrayList<>();
-                studentList.add(new Student(1,"ellen1","男","18272167571",true,"A"));
-                studentList.add(new Student(2,"ellen2","女","18272167572",false,"B"));
-                studentList.add(new Student(3,"ellen3","男","18272167573",true,"C"));
-                studentList.add(new Student(4,"ellen4","男","18272167574",true,"D"));
-                studentList.add(new Student(5,"ellen5","女","18272167575",false,"E"));
-                zxyReflectionTable.saveData(studentList);
+                Log.e("Ellen->建表成功", createSQL);
+                List<Phone> phoneList = new ArrayList<>();
+                System system1 = new System("Android", 4);
+                System system2 = new System("WindosPhone", 8);
+                System system3 = new System("Android", 6);
+                System system4 = new System("IOS", 20);
+                System system5 = new System("Android", 8);
+                Phone phone1 = new Phone(1, "A-1", "5寸", 1799, system1);
+                Phone phone2 = new Phone(2, "A-2", "10寸", 1899, system2);
+                Phone phone3 = new Phone(3, "A-3", "8寸", 2799, system3);
+                Phone phone4 = new Phone(4, "A-4", "7寸", 8799, system4);
+                Phone phone5 = new Phone(5, "A-5", "6寸", 111799, system5);
+                phoneList.add(phone1);
+                phoneList.add(phone2);
+                phoneList.add(phone3);
+                phoneList.add(phone4);
+                phoneList.add(phone5);
+                phoneSQLite.saveData(phoneList);
             }
         });
-
         String orderSQL = Order.getInstance(false).setFirstOrderFieldName("id").setIsDesc(true).createSQL();
-        List<Student> studentList = zxyReflectionTable.getAllDatas(orderSQL);
-        for(Student student:studentList){
-            Log.e("查询的数据",student.getName()+":"+student.getId()+":"+student.isMan()+":"+student.getNameOne());
+        List<Phone> phoneList = phoneSQLite.getAllDatas(orderSQL);
+        for (Phone phone : phoneList) {
+            Log.e("查询的数据", phone.toString());
         }
     }
-
 }

@@ -199,6 +199,9 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
      * @param data
      */
     public void saveData(T data) {
+        if(data == null){
+            return;
+        }
         AddSingleRowToTable addSingleRowToTable = getAddSingleRowToTable();
         addSingleRowToTable.setTableName(tableName);
         for (int i = 0; i < sqlFieldList.size(); i++) {
@@ -224,6 +227,9 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
      * @param dataList
      */
     public void saveData(List<T> dataList) {
+        if(dataList == null || dataList.size() == 0){
+            return;
+        }
         AddManyRowToTable addManyRowToTable = getAddManyRowToTable();
         addManyRowToTable.setTableName(tableName);
         addManyRowToTable.addFieldList(sqlFieldList);
@@ -300,7 +306,6 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
         SerachTableData serachTableData = getSerachTableData().setTableName(tableName);
         serachTableData.setIsAddField(false);
         String getAllTableDataSQL = serachTableData.getTableAllDataSQL(orderSQL);
-        Log.e("查询语句", getAllTableDataSQL);
         return serachDatasBySQL(getAllTableDataSQL);
     }
 
@@ -314,7 +319,6 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
         } else {
             serachSQL = serachTableData.createSQLAutoWhere(whereSQL);
         }
-        Log.e("查询语句", serachSQL);
         return serachDatasBySQL(serachSQL);
     }
 
@@ -323,14 +327,9 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
         Cursor cursor = serachBySQL(sql);
         while (cursor.moveToNext()) {
             T t = null;
-            Constructor constructors = null;
             try {
-                constructors = dataClass.getConstructor();
-                constructors.setAccessible(true);
-                t = (T) constructors.newInstance();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
+                t = getT();
+            }catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (InstantiationException e) {
                 e.printStackTrace();
@@ -373,7 +372,6 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
                 } else if (sqlDataType.equals(SQLFieldTypeEnum.NUMERIC.getTypeName())) {
 
                 }
-
                 try {
                     if(reflactionHelper.isBasicType(field)) {
                         if (field.getType() == Boolean.class || field.getType().getName().equals("boolean")) {
@@ -399,6 +397,23 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
             cursor.close();
         }
         return dataList;
+    }
+
+    private T getT() throws IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor[] constructors = dataClass.getDeclaredConstructors();
+        Constructor constructor = constructors[0];
+        constructor.setAccessible(true);
+        Class[] classArray = constructor.getParameterTypes();
+        if(classArray != null && classArray.length > 0) {
+            Object[] objects = new Object[classArray.length];
+            for (int i = 0; i < classArray.length; i++) {
+                Object value = reflactionHelper.getDefaultValue(classArray[i]);
+                objects[i] = value;
+            }
+            return (T) constructor.newInstance(objects);
+        } else {
+            return (T) constructor.newInstance();
+        }
     }
 
     /**

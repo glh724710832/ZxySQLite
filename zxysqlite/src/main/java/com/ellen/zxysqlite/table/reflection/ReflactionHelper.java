@@ -69,4 +69,28 @@ public class ReflactionHelper<T> {
         return b;
     }
 
+    public Object getDefaultValue(Class classType) {
+        if (classType == Byte.class || classType.getName().equals("byte")) {
+            return 0;
+        } else if (classType == Short.class || classType.getName().equals("short")) {
+            return 0;
+        } else if (classType == Integer.class || classType.getName().equals("int")) {
+            return 0;
+        } else if (classType == Long.class || classType.getName().equals("long")) {
+            return 0;
+        } else if (classType == Float.class || classType.getName().equals("float")) {
+            return 0;
+        } else if (classType == Double.class || classType.getName().equals("double")) {
+            return 0;
+        } else if (classType == Boolean.class || classType.getName().equals("boolean")) {
+            return false;
+        } else if (classType == Character.class || classType.getName().equals("char")) {
+            return '0';
+        } else if (classType == String.class) {
+           return null;
+        }else {
+            return null;
+        }
+    }
+
 }

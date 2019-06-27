@@ -1,6 +1,5 @@
 package com.ellen.zxysqlite;
 
-import com.ellen.zxysqlite.table.reflection.Ignore;
 import com.ellen.zxysqlite.table.reflection.Primarykey;
 
 public class Student {
@@ -13,9 +12,7 @@ public class Student {
     private boolean isMan = false;
     private String date = "2018-04-05";
     private Character nameOne = 'b';
-    @Ignore
     private Teacher teacher;
-    @Ignore
     private String[] projectName = {"语文","数学","英语"};
 
     public Student(){}
