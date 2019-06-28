@@ -4,10 +4,11 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.ellen.zxysqlite.createsql.helper.SQLFieldType;
 import com.ellen.zxysqlite.createsql.helper.SQLFieldTypeEnum;
+import com.ellen.zxysqlite.table.reflection.EncryptionInterFace;
 import com.ellen.zxysqlite.table.reflection.ZxyReflectionTable;
 import com.google.gson.Gson;
 
-public class PhoneSQLite extends ZxyReflectionTable<Phone> {
+public class PhoneSQLite extends ZxyReflectionTable<Phone> implements EncryptionInterFace {
 
     public PhoneSQLite(SQLiteDatabase db, Class<? extends Phone> dataClass) {
         super(db, dataClass);
@@ -44,5 +45,25 @@ public class PhoneSQLite extends ZxyReflectionTable<Phone> {
     protected Object resumeConversionObject(Object value, String className, Class typeClass) {
         System system = new System((String) value,2);
         return system;
+    }
+
+    @Override
+    public Object encryption(String classFieldName, String sqlFieldName, Class typeClass, Object value) {
+        if(classFieldName.equals("xinHao")){
+            String str = (String) value;
+            str = "加密"+str;
+            return str;
+        }
+        return value;
+    }
+
+    @Override
+    public Object decrypt(String classFieldName, String sqlFieldName, Class typeClass, Object value) {
+        if(classFieldName.equals("xinHao")){
+            String str = (String) value;
+            str = str.substring(2);
+            return str;
+        }
+        return value;
     }
 }

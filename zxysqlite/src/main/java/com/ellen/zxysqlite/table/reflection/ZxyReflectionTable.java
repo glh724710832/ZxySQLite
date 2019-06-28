@@ -220,6 +220,11 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
             } else {
                 value = setConversionValue(data, field.getName(), field.getType());
             }
+            if(ZxyReflectionTable.this instanceof EncryptionInterFace){
+                //进行加密
+                EncryptionInterFace encryptionInterFace = (EncryptionInterFace) this;
+                value = encryptionInterFace.encryption(field.getName(),sqlFieldList.get(i).getName(),field.getType(),value);
+            }
             addSingleRowToTable.addData(new Value(sqlFieldList.get(i).getName(), value));
         }
         String addDataSql = addSingleRowToTable.createSQL();
@@ -250,6 +255,12 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
                     }
                 } else {
                     value = setConversionValue(dataList.get(i), field.getName(), field.getType());
+                }
+                if(ZxyReflectionTable.this instanceof EncryptionInterFace){
+                    //进行加密
+                    EncryptionInterFace encryptionInterFace = (EncryptionInterFace) this;
+                    value = encryptionInterFace.encryption(field.getName(),sqlFieldList.get(j).getName(),field.getType(),value);
+                    Log.e("加密的数据", value.toString());
                 }
                 list.add(value);
             }
@@ -377,6 +388,13 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
                 } else if (sqlDataType.equals(SQLFieldTypeEnum.NUMERIC.getTypeName())) {
 
                 }
+
+                //进行解密
+                if(this instanceof EncryptionInterFace){
+                    EncryptionInterFace encryptionInterFace = (EncryptionInterFace) this;
+                    value = encryptionInterFace.decrypt(field.getName(),sqlFieldList.get(i).getName(),field.getType(),value);
+                }
+
                 try {
                     if(reflactionHelper.isBasicType(field)) {
                         if (field.getType() == Boolean.class || field.getType().getName().equals("boolean")) {

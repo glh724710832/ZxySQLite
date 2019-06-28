@@ -106,9 +106,9 @@ public class MainActivity extends AppCompatActivity {
         });
         String whereSQL = phoneSQLite.getWhereIn(false)
                 .setFieldName("xinHao")
-                .addInValue("A-3")
-                .addInValue("A-4")
-                .addInValue("A-5")
+                .addInValue("加密"+"A-3")
+                .addInValue("加密"+"A-4")
+                .addInValue("加密"+"A-5")
                 .createSQLWhereIn();
         String orderSQL = Order.getInstance(false).setFirstOrderFieldName("id").setIsDesc(false).createSQL();
         List<Phone> phoneList = phoneSQLite.serach(whereSQL,orderSQL);
