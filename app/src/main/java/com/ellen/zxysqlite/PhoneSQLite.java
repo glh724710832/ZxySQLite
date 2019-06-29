@@ -6,7 +6,6 @@ import com.ellen.zxysqlite.createsql.helper.SQLFieldType;
 import com.ellen.zxysqlite.createsql.helper.SQLFieldTypeEnum;
 import com.ellen.zxysqlite.table.reflection.EncryptionInterFace;
 import com.ellen.zxysqlite.table.reflection.ZxyReflectionTable;
-import com.google.gson.Gson;
 
 public class PhoneSQLite extends ZxyReflectionTable<Phone> implements EncryptionInterFace {
 
@@ -16,8 +15,11 @@ public class PhoneSQLite extends ZxyReflectionTable<Phone> implements Encryption
 
     @Override
     protected SQLFieldType getSQLFieldType(String classFieldName, Class typeClass) {
-        SQLFieldType sqlFieldType = new SQLFieldType(getSQlStringType(typeClass),null);
-        return sqlFieldType;
+        if(typeClass == Boolean.class || typeClass.getName().equals("boolean")){
+            return new SQLFieldType(SQLFieldTypeEnum.TEXT,5);
+        }else {
+            return new SQLFieldType(getSQlStringType(typeClass), null);
+        }
     }
 
     @Override
@@ -27,7 +29,11 @@ public class PhoneSQLite extends ZxyReflectionTable<Phone> implements Encryption
 
     @Override
     protected Object setBooleanValue(String classFieldName, boolean value) {
-        return null;
+        if(value){
+            return "true";
+        }else {
+            return "false";
+        }
     }
 
     @Override

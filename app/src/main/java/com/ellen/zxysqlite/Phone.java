@@ -12,6 +12,7 @@ public class Phone {
     private String ciCun;
     private float price;
     private System system;
+    private boolean isTag = false;
 
     public Phone(int id, String xinHao, String ciCun, float price, System system) {
         this.id = id;

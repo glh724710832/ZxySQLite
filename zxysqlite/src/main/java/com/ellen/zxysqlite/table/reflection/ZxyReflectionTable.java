@@ -3,7 +3,6 @@ package com.ellen.zxysqlite.table.reflection;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.ellen.zxysqlite.createsql.add.AddManyRowToTable;
 import com.ellen.zxysqlite.createsql.add.AddSingleRowToTable;
@@ -260,7 +259,6 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
                     //进行加密
                     EncryptionInterFace encryptionInterFace = (EncryptionInterFace) this;
                     value = encryptionInterFace.encryption(field.getName(),sqlFieldList.get(j).getName(),field.getType(),value);
-                    Log.e("加密的数据", value.toString());
                 }
                 list.add(value);
             }
