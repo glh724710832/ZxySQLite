@@ -115,6 +115,9 @@ public class MainActivity extends AppCompatActivity {
         for (Phone phone : phoneList) {
             Log.e("查询的数据", phone.toString());
         }
+        System system1 = new System("Android22", 88);
+        Phone phone1 = new Phone(1, "A-1", "811寸", 799.6f, system1);
+        phoneSQLite.saveOrUpdate(phone1);
 
     }
 }

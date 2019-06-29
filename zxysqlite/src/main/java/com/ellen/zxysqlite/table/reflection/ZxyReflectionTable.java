@@ -3,6 +3,7 @@ package com.ellen.zxysqlite.table.reflection;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.ellen.zxysqlite.createsql.add.AddManyRowToTable;
 import com.ellen.zxysqlite.createsql.add.AddSingleRowToTable;
@@ -10,6 +11,7 @@ import com.ellen.zxysqlite.createsql.create.createtable.SQLField;
 import com.ellen.zxysqlite.createsql.helper.SQLFieldType;
 import com.ellen.zxysqlite.createsql.helper.SQLFieldTypeEnum;
 import com.ellen.zxysqlite.createsql.helper.Value;
+import com.ellen.zxysqlite.createsql.helper.WhereSymbolEnum;
 import com.ellen.zxysqlite.createsql.serach.SerachTableData;
 import com.ellen.zxysqlite.createsql.update.UpdateTableDataRow;
 import com.ellen.zxysqlite.table.ZxyTable;
@@ -32,6 +34,7 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
     private String tableName;
     private ReflactionHelper<T> reflactionHelper;
     private HashMap<SQLField, Field> sqlNameMap;
+    private Field primarykeyField = null;
 
     public ZxyReflectionTable(SQLiteDatabase db, Class<? extends T> dataClass) {
         super(db);
@@ -71,6 +74,7 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
             if (primarykey != null) {
                 //这里是主键
                 sqlField = SQLField.getPrimaryKeyField(fieldName, fieldType,false);
+                primarykeyField = field;
             }else {
                 NotNull notNull = field.getAnnotation(NotNull.class);
                 if(notNull != null){
@@ -268,6 +272,35 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
         exeSQL(addDataSql);
     }
 
+    public void saveOrUpdate(T t){
+        if(primarykeyField != null){
+            String sqlFieldName = getSQLFieldName(primarykeyField.getName(),primarykeyField.getType());
+            String whereSQL = getWhere(false).addAndWhereValue(sqlFieldName, WhereSymbolEnum.EQUAL,reflactionHelper.getValue(t,primarykeyField)).createSQL();
+            String serachSQL = getSerachTableData().setTableName(tableName).setIsAddField(false).createSQLAutoWhere(whereSQL);
+           List<T> list = serachDatasBySQL(serachSQL);
+           if(list != null && list.size()>0){
+               //进行更新
+               update(t,whereSQL);
+           }else {
+               //进行保存
+               saveData(t);
+           }
+
+        }
+    }
+
+    public void saveOrUpdate(T t,String whereSQL){
+            String serachSQL = getSerachTableData().setTableName(tableName).setIsAddField(false).createSQLAutoWhere(whereSQL);
+            List<T> list = serachDatasBySQL(serachSQL);
+            if(list != null && list.size()>0){
+                //进行更新
+                update(t,whereSQL);
+            }else {
+                //进行保存
+                saveData(t);
+            }
+    }
+    
     /**
      * 删除
      * 建议使用Where系列类生产Where SQL语句
@@ -300,9 +333,18 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
         for (int i = 0; i < sqlFieldList.size(); i++) {
             String fieldName = sqlFieldList.get(i).getName();
             Field field = sqlNameMap.get(sqlFieldList.get(i));
-            Object value = reflactionHelper.getValue(t, field);
-            if (value instanceof Boolean) {
-                value = setBooleanValue(field.getName(), (Boolean) value);
+            Object value = null;
+            if (reflactionHelper.isBasicType(field)) {
+                value = reflactionHelper.getValue(t, field);
+                if (value instanceof Boolean) {
+                    value = setBooleanValue(field.getName(), (Boolean) value);
+                }
+            }else {
+                value = setConversionValue(t,field.getName(),field.getType());
+            }
+            if(this instanceof EncryptionInterFace){
+                EncryptionInterFace encryptionInterFace = (EncryptionInterFace) this;
+                value = encryptionInterFace.encryption(field.getName(),fieldName,field.getType(),value);
             }
             updateTableDataRow.addSetValue(fieldName, value);
         }
