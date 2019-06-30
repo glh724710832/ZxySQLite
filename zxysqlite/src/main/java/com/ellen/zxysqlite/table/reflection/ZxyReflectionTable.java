@@ -3,7 +3,6 @@ package com.ellen.zxysqlite.table.reflection;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.ellen.zxysqlite.createsql.add.AddManyRowToTable;
 import com.ellen.zxysqlite.createsql.add.AddSingleRowToTable;
@@ -334,6 +333,11 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
             String fieldName = sqlFieldList.get(i).getName();
             Field field = sqlNameMap.get(sqlFieldList.get(i));
             Object value = null;
+            if(primarykeyField != null){
+                if(field.getName().equals(primarykeyField.getName())){
+                    continue;
+                }
+            }
             if (reflactionHelper.isBasicType(field)) {
                 value = reflactionHelper.getValue(t, field);
                 if (value instanceof Boolean) {

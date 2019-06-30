@@ -1,5 +1,6 @@
 package com.ellen.zxysqlite;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import com.ellen.zxysqlite.createsql.order.Order;
 import com.ellen.zxysqlite.createsql.update.UpdateTableDataRow;
 import com.ellen.zxysqlite.createsql.where.Where;
 import com.ellen.zxysqlite.createsql.where.WhereIn;
+import com.ellen.zxysqlite.singletable.SActivity;
 import com.ellen.zxysqlite.singletable.StudentReflectionTable;
 import com.ellen.zxysqlite.table.reflection.ZxyReflectionTable;
 
@@ -105,10 +107,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         String whereSQL = phoneSQLite.getWhereIn(false)
-                .setFieldName("xinHao")
-                .addInValue("加密"+"A-3")
-                .addInValue("加密"+"A-4")
-                .addInValue("加密"+"A-5")
+                .setFieldName("system")
+                .addInValue("Android22")
                 .createSQLWhereIn();
         String orderSQL = Order.getInstance(false).setFirstOrderFieldName("id").setIsDesc(false).createSQL();
         List<Phone> phoneList = phoneSQLite.serach(whereSQL,orderSQL);
@@ -117,7 +117,16 @@ public class MainActivity extends AppCompatActivity {
         }
         System system1 = new System("Android22", 88);
         Phone phone1 = new Phone(1, "A-1", "811寸", 799.6f, system1);
-        phoneSQLite.saveOrUpdate(phone1);
+        phoneSQLite.saveOrUpdate(phone1,whereSQL);
 
+        Intent intent = new Intent(MainActivity.this, SActivity.class);
+        startActivity(intent);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.e("执行没？","ok");
     }
 }
