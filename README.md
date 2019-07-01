@@ -3,5 +3,5 @@
 SQLite语句生产库  
 
 > maven { url 'https://www.jitpack.io' }  
->implementation 'com.github.Ellen2018:ZxySQLite:1.0.6'  
+>implementation 'com.github.Ellen2018:ZxySQLite:1.0.8'  
 
