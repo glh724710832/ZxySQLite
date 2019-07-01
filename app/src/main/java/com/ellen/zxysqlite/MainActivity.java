@@ -93,34 +93,33 @@ public class MainActivity extends AppCompatActivity {
                 System system3 = new System("Android", 6);
                 System system4 = new System("IOS", 20);
                 System system5 = new System("Android", 8);
-                Phone phone1 = new Phone(1, "A-1", "5寸", 1799.9f, system1);
-                Phone phone2 = new Phone(2, "A-2", "10寸", 1899.7f, system2);
-                Phone phone3 = new Phone(3, "A-3", "8寸", 2799.6f, system3);
-                Phone phone4 = new Phone(4, "A-4", "7寸", 8799.6f, system4);
-                Phone phone5 = new Phone(5, "A-5", "6寸", 111799.3f, system5);
+                Phone phone1 = new Phone(1, null, "5寸", 1799.9f, system1);
+                Phone phone2 = new Phone(2, null, "10寸", 1899.7f, system2);
+                Phone phone3 = new Phone(3, null, "8寸", 2799.6f, system3);
+                Phone phone4 = new Phone(4, null, "7寸", 8799.6f, system4);
+                Phone phone5 = new Phone(5, null, "6寸", 111799.3f, system5);
                 phoneList.add(phone1);
                 phoneList.add(phone2);
                 phoneList.add(phone3);
                 phoneList.add(phone4);
                 phoneList.add(phone5);
-                phoneSQLite.saveData(phoneList);
+                phoneSQLite.saveData(phone1);
             }
         });
-        String whereSQL = phoneSQLite.getWhereIn(false)
-                .setFieldName("system")
-                .addInValue("Android22")
-                .createSQLWhereIn();
-        String orderSQL = Order.getInstance(false).setFirstOrderFieldName("id").setIsDesc(false).createSQL();
-        List<Phone> phoneList = phoneSQLite.serach(whereSQL,orderSQL);
-        for (Phone phone : phoneList) {
-            Log.e("查询的数据", phone.toString());
-        }
-        System system1 = new System("Android22", 88);
-        Phone phone1 = new Phone(1, "A-1", "811寸", 799.6f, system1);
-        phoneSQLite.saveOrUpdate(phone1,whereSQL);
 
-        Intent intent = new Intent(MainActivity.this, SActivity.class);
-        startActivity(intent);
+        List<Phone> phoneList = phoneSQLite.getAllDatas(null);
+        for(Phone phone:phoneList){
+            Log.e("查询的数据",phone.toString());
+            if(phone.getXinHao() == null){
+                Log.e("真的为空了","null");
+            }
+        }
+
+        String whereSQL = Where.getInstance(false)
+                .addAndWhereValue("cd",WhereSymbolEnum.EQUAL,null)
+                .addAndWhereValue("dd",WhereSymbolEnum.LESS_THAN,33)
+                .createSQL();
+        Log.e("制作的SQL",whereSQL);
 
     }
 

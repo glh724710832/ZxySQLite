@@ -7,7 +7,7 @@ import com.ellen.zxysqlite.createsql.helper.SQLFieldTypeEnum;
 import com.ellen.zxysqlite.table.reflection.EncryptionInterFace;
 import com.ellen.zxysqlite.table.reflection.ZxyReflectionTable;
 
-public class PhoneSQLite extends ZxyReflectionTable<Phone> implements EncryptionInterFace {
+public class PhoneSQLite extends ZxyReflectionTable<Phone>{
 
     public PhoneSQLite(SQLiteDatabase db, Class<? extends Phone> dataClass) {
         super(db, dataClass);
@@ -52,24 +52,5 @@ public class PhoneSQLite extends ZxyReflectionTable<Phone> implements Encryption
         System system = new System((String) value,2);
         return system;
     }
-
-    @Override
-    public Object encryption(String classFieldName, String sqlFieldName, Class typeClass, Object value) {
-        if(classFieldName.equals("xinHao")){
-            String str = (String) value;
-            str = "加密"+str;
-            return str;
-        }
-        return value;
-    }
-
-    @Override
-    public Object decrypt(String classFieldName, String sqlFieldName, Class typeClass, Object value) {
-        if(classFieldName.equals("xinHao")){
-            String str = (String) value;
-            str = str.substring(2);
-            return str;
-        }
-        return value;
-    }
+    
 }

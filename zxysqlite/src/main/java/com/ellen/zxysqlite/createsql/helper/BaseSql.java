@@ -36,10 +36,14 @@ public class BaseSql {
     protected String getValueString(List<Value> valueList){
         StringBuilder stringBuilder = new StringBuilder();
         for(int i=0;i<valueList.size();i++){
-            if(valueList.get(i).getValue() instanceof String|| valueList.get(i).getValue() instanceof Character){
-                stringBuilder.append("'"+valueList.get(i).getValue()+"'");
+            if(valueList.get(i).getValue() != null) {
+                if (valueList.get(i).getValue() instanceof String || valueList.get(i).getValue() instanceof Character) {
+                    stringBuilder.append("'" + valueList.get(i).getValue() + "'");
+                } else {
+                    stringBuilder.append(valueList.get(i).getValue());
+                }
             }else {
-                stringBuilder.append(valueList.get(i).getValue());
+                stringBuilder.append("NULL");
             }
 
             if(i != valueList.size()-1){
@@ -81,10 +85,14 @@ public class BaseSql {
             WhereValue whereValue = whereMap.get(columnName);
             stringBuilder.append(columnName);
             stringBuilder.append(" "+whereValue.getWhereSymbol()+" ");
-            if(whereValue.getValue() instanceof String){
-               stringBuilder.append("'"+whereValue.getValue()+"'");
+            if(whereValue.getValue() != null) {
+                if (whereValue.getValue() instanceof String || whereValue.getValue() instanceof Character) {
+                    stringBuilder.append("'" + whereValue.getValue() + "'");
+                } else {
+                    stringBuilder.append(whereValue.getValue());
+                }
             }else {
-                stringBuilder.append(whereValue.getValue());
+                stringBuilder.append("NULL");
             }
             if(i != whereMap.size()){
                 stringBuilder.append(" AND ");
@@ -102,10 +110,14 @@ public class BaseSql {
             i++;
             Object value = setMap.get(columnName);
             stringBuilder.append(columnName+"=");
-            if(value instanceof String || value instanceof Character){
-                stringBuilder.append("'"+value+"'");
+            if(value != null) {
+                if (value instanceof String || value instanceof Character) {
+                    stringBuilder.append("'" + value + "'");
+                } else {
+                    stringBuilder.append(value);
+                }
             }else {
-                stringBuilder.append(value);
+                stringBuilder.append("NULL");
             }
             if(i != setMap.size()){
                 stringBuilder.append(",");

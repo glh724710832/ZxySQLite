@@ -46,16 +46,19 @@ public class AddManyRowToTable extends BaseSql {
     public AddManyRowToTable addValueList(List<Object> valueList) {
         List<String> values = new ArrayList<>();
         for (int i = 0; i < valueList.size(); i++) {
-            if(valueList.get(i) instanceof String) {
-                String value = (String) valueList.get(i);
-                values.add("'"+value+"'");
-            }else if(valueList.get(i) instanceof Character){
-                Character character = (Character) valueList.get(i);
-                String value = String.valueOf(character);
-                values.add("'"+value+"'");
-            }
-            else {
-                values.add(valueList.get(i).toString());
+            if(valueList.get(i) != null) {
+                if (valueList.get(i) instanceof String) {
+                    String value = (String) valueList.get(i);
+                    values.add("'" + value + "'");
+                } else if (valueList.get(i) instanceof Character) {
+                    Character character = (Character) valueList.get(i);
+                    String value = String.valueOf(character);
+                    values.add("'" + value + "'");
+                } else {
+                    values.add(valueList.get(i).toString());
+                }
+            }else {
+                values.add("NULL");
             }
         }
         listList.add(values);

@@ -36,10 +36,14 @@ public class Where {
         }
         stringBuilder.append(fieldName);
         stringBuilder.append(" "+whereSymbolEnum.getSymbol()+" ");
-        if(value instanceof String){
-            stringBuilder.append("'"+value+"'");
+        if(value != null) {
+            if (value instanceof String || value instanceof Character) {
+                stringBuilder.append("'" + value + "'");
+            } else {
+                stringBuilder.append(value);
+            }
         }else {
-            stringBuilder.append(value);
+            stringBuilder.append("NULL");
         }
         size++;
         return this;

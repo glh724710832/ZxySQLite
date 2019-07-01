@@ -3,6 +3,7 @@ package com.ellen.zxysqlite.table.reflection;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.ellen.zxysqlite.createsql.add.AddManyRowToTable;
 import com.ellen.zxysqlite.createsql.add.AddSingleRowToTable;
@@ -268,6 +269,7 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
             addManyRowToTable.addValueList(list);
         }
         String addDataSql = addManyRowToTable.createSQL();
+        Log.e("添加数据的SQL语句",addDataSql);
         exeSQL(addDataSql);
     }
 
@@ -278,8 +280,7 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
             String serachSQL = getSerachTableData().setTableName(tableName).setIsAddField(false).createSQLAutoWhere(whereSQL);
            List<T> list = serachDatasBySQL(serachSQL);
            if(list != null && list.size()>0){
-               //进行更新
-               update(t,whereSQL);
+               //进行更新,这里自己写吧!
            }else {
                //进行保存
                saveData(t);
@@ -292,8 +293,7 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
             String serachSQL = getSerachTableData().setTableName(tableName).setIsAddField(false).createSQLAutoWhere(whereSQL);
             List<T> list = serachDatasBySQL(serachSQL);
             if(list != null && list.size()>0){
-                //进行更新
-                update(t,whereSQL);
+                //进行更新,这里也自己写吧
             }else {
                 //进行保存
                 saveData(t);
@@ -333,11 +333,6 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
             String fieldName = sqlFieldList.get(i).getName();
             Field field = sqlNameMap.get(sqlFieldList.get(i));
             Object value = null;
-            if(primarykeyField != null){
-                if(field.getName().equals(primarykeyField.getName())){
-                    continue;
-                }
-            }
             if (reflactionHelper.isBasicType(field)) {
                 value = reflactionHelper.getValue(t, field);
                 if (value instanceof Boolean) {
@@ -426,11 +421,11 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
                         value = cursor.getString(index);
                     }
                 } else if (sqlDataType.equals(SQLFieldTypeEnum.BLOB.getTypeName())) {
-
+                        value = cursor.getBlob(index);
                 } else if (sqlDataType.equals(SQLFieldTypeEnum.DATE.getTypeName())) {
-                    value = cursor.getString(index);
+                        value = cursor.getString(index);
                 } else if (sqlDataType.equals(SQLFieldTypeEnum.NUMERIC.getTypeName())) {
-
+                        value = cursor.getString(index);
                 }
 
                 //进行解密

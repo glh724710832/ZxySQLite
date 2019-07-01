@@ -28,10 +28,14 @@ public class WhereIn extends BaseSql {
     }
 
     public WhereIn addInValue(Object object){
-        if(object instanceof String){
-            valueList.add("'"+object+"'");
+        if(object != null) {
+            if (object instanceof String || object instanceof Character) {
+                valueList.add("'" + object + "'");
+            } else {
+                valueList.add(String.valueOf(object));
+            }
         }else {
-            valueList.add(String.valueOf(object));
+            valueList.add("NULL");
         }
         return this;
     }
