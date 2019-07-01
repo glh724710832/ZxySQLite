@@ -234,6 +234,10 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
         exeSQL(addDataSql);
     }
 
+    public String getTableName(){
+        return tableName;
+    }
+
     /**
      * 保存数据(多条)
      *
