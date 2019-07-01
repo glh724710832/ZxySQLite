@@ -420,7 +420,12 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
                     }
                 } else if (sqlDataType.equals(SQLFieldTypeEnum.TEXT.getTypeName())) {
                     if (type == Character.class || type.getName().equals("char")) {
-                        value = cursor.getString(index).charAt(0);
+                        String str = cursor.getString(index);
+                        if(str != null) {
+                            value = cursor.getString(index).charAt(0);
+                        }else {
+                            value = null;
+                        }
                     } else {
                         value = cursor.getString(index);
                     }
