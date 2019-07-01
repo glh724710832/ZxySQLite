@@ -447,7 +447,7 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
                             if(field.getType() == Byte.class || field.getType().getName().equals("byte")){
                                 Integer integer = (Integer) value;
                                 field.set(t,(byte)integer.intValue());
-                            }else if(field.getType() == Byte.class || field.getType().getName().equals("byte")){
+                            }else if(field.getType() == Short.class || field.getType().getName().equals("short")){
                                 Integer integer = (Integer) value;
                                 field.set(t,(short)integer.intValue());
                             }else {

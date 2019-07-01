@@ -13,7 +13,8 @@ public class Phone {
     private float price;
     private System system;
     private boolean isTag = false;
-    private byte aByte = 1;
+    private short aByte = 3;
+    private char a = 'c';
 
     public Phone(int id, String xinHao, String ciCun, float price, System system) {
         this.id = id;
@@ -63,6 +64,30 @@ public class Phone {
         this.system = system;
     }
 
+    public boolean isTag() {
+        return isTag;
+    }
+
+    public void setTag(boolean tag) {
+        isTag = tag;
+    }
+
+    public short getaByte() {
+        return aByte;
+    }
+
+    public void setaByte(short aByte) {
+        this.aByte = aByte;
+    }
+
+    public char getA() {
+        return a;
+    }
+
+    public void setA(char a) {
+        this.a = a;
+    }
+
     @Override
     public String toString() {
         return "Phone{" +
@@ -70,7 +95,10 @@ public class Phone {
                 ", xinHao='" + xinHao + '\'' +
                 ", ciCun='" + ciCun + '\'' +
                 ", price=" + price +
-                ", system=" + system.toString() +
+                ", system=" + system +
+                ", isTag=" + isTag +
+                ", aByte=" + aByte +
+                ", a=" + a +
                 '}';
     }
 }
