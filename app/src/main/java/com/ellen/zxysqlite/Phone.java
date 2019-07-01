@@ -13,6 +13,7 @@ public class Phone {
     private float price;
     private System system;
     private boolean isTag = false;
+    private byte aByte = 1;
 
     public Phone(int id, String xinHao, String ciCun, float price, System system) {
         this.id = id;
