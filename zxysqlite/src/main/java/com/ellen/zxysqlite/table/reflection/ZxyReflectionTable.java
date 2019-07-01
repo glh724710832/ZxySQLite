@@ -273,7 +273,7 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
         exeSQL(addDataSql);
     }
 
-    public void saveOrUpdate(T t){
+    private void saveOrUpdate(T t){
         if(primarykeyField != null){
             String sqlFieldName = getSQLFieldName(primarykeyField.getName(),primarykeyField.getType());
             String whereSQL = getWhere(false).addAndWhereValue(sqlFieldName, WhereSymbolEnum.EQUAL,reflactionHelper.getValue(t,primarykeyField)).createSQL();
@@ -289,7 +289,7 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
         }
     }
 
-    public void saveOrUpdate(T t,String whereSQL){
+    private void saveOrUpdate(T t,String whereSQL){
             String serachSQL = getSerachTableData().setTableName(tableName).setIsAddField(false).createSQLAutoWhere(whereSQL);
             List<T> list = serachDatasBySQL(serachSQL);
             if(list != null && list.size()>0){
