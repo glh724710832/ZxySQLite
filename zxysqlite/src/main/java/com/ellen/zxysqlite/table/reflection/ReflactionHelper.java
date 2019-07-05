@@ -1,6 +1,6 @@
 package com.ellen.zxysqlite.table.reflection;
 
-import com.ellen.zxysqlite.createsql.helper.SQLFieldTypeEnum;
+import com.ellen.sqlitecreate.createsql.helper.SQLFieldTypeEnum;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

@@ -1,19 +1,19 @@
 package com.ellen.zxysqlite;
 
-import com.ellen.zxysqlite.createsql.add.AddManyRowToTable;
-import com.ellen.zxysqlite.createsql.add.AddSingleRowToTable;
-import com.ellen.zxysqlite.createsql.add.AddTableColumn;
-import com.ellen.zxysqlite.createsql.create.createtable.CreateTable;
-import com.ellen.zxysqlite.createsql.delete.DeleteTable;
-import com.ellen.zxysqlite.createsql.delete.DeleteTableDataRow;
-import com.ellen.zxysqlite.createsql.order.Order;
-import com.ellen.zxysqlite.createsql.serach.SerachTableData;
-import com.ellen.zxysqlite.createsql.serach.SerachTableExist;
-import com.ellen.zxysqlite.createsql.update.UpdateTableDataRow;
-import com.ellen.zxysqlite.createsql.update.UpdateTableName;
-import com.ellen.zxysqlite.createsql.where.Between;
-import com.ellen.zxysqlite.createsql.where.Where;
-import com.ellen.zxysqlite.createsql.where.WhereIn;
+import com.ellen.sqlitecreate.createsql.add.AddManyRowToTable;
+import com.ellen.sqlitecreate.createsql.add.AddSingleRowToTable;
+import com.ellen.sqlitecreate.createsql.add.AddTableColumn;
+import com.ellen.sqlitecreate.createsql.create.createtable.CreateTable;
+import com.ellen.sqlitecreate.createsql.delete.DeleteTable;
+import com.ellen.sqlitecreate.createsql.delete.DeleteTableDataRow;
+import com.ellen.sqlitecreate.createsql.order.Order;
+import com.ellen.sqlitecreate.createsql.serach.SerachTableData;
+import com.ellen.sqlitecreate.createsql.serach.SerachTableExist;
+import com.ellen.sqlitecreate.createsql.update.UpdateTableDataRow;
+import com.ellen.sqlitecreate.createsql.update.UpdateTableName;
+import com.ellen.sqlitecreate.createsql.where.Between;
+import com.ellen.sqlitecreate.createsql.where.Where;
+import com.ellen.sqlitecreate.createsql.where.WhereIn;
 
 public class ZxySQLite {
 

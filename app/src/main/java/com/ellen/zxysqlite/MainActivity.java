@@ -1,22 +1,15 @@
 package com.ellen.zxysqlite;
 
-import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.ellen.zxysqlite.createsql.create.createtable.CreateTable;
-import com.ellen.zxysqlite.createsql.create.createtable.SQLField;
-import com.ellen.zxysqlite.createsql.helper.WhereSymbolEnum;
-import com.ellen.zxysqlite.createsql.order.Order;
-import com.ellen.zxysqlite.createsql.update.UpdateTableDataRow;
-import com.ellen.zxysqlite.createsql.where.Where;
-import com.ellen.zxysqlite.createsql.where.WhereIn;
-import com.ellen.zxysqlite.singletable.SActivity;
-import com.ellen.zxysqlite.singletable.StudentReflectionTable;
+import com.ellen.sqlitecreate.createsql.create.createtable.CreateTable;
+import com.ellen.sqlitecreate.createsql.create.createtable.SQLField;
+import com.ellen.sqlitecreate.createsql.helper.WhereSymbolEnum;
+import com.ellen.sqlitecreate.createsql.where.Where;
 import com.ellen.zxysqlite.table.reflection.ZxyReflectionTable;
 
 import java.io.File;
@@ -26,13 +19,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private TextView textView;
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        setContentView(R.layout.activity_main);
-        initView();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         }
         MySQLiteHelper mySQLiteHelper = new MySQLiteHelper(this,file.getAbsolutePath(),"my",1);
         final PhoneSQLite phoneSQLite = new PhoneSQLite(mySQLiteHelper.getWriteDataBase(), Phone.class);
-        phoneSQLite.onCreateTable(new ZxyReflectionTable.OnCreateSQLiteCallback() {
+        phoneSQLite.onCreateTableIfNotExits(new ZxyReflectionTable.OnCreateSQLiteCallback() {
             @Override
             public void onCreateTableBefore(String tableName, List<SQLField> sqlFieldList, String createSQL) {
 
@@ -103,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 phoneList.add(phone3);
                 phoneList.add(phone4);
                 phoneList.add(phone5);
-                phoneSQLite.saveData(phone1);
+                phoneSQLite.saveData(phoneList);
             }
         });
 
@@ -117,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
         String whereSQL = Where.getInstance(false)
                 .addAndWhereValue("cd",WhereSymbolEnum.EQUAL,null)
-                .addAndWhereValue("dd",WhereSymbolEnum.LESS_THAN,33)
+                .addAndWhereValue("dd", WhereSymbolEnum.LESS_THAN,33)
                 .createSQL();
         Log.e("制作的SQL",whereSQL);
 

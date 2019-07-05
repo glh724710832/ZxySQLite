@@ -2,10 +2,10 @@ package com.ellen.zxysqlite.singletable;
 
 import android.database.sqlite.SQLiteDatabase;
 
+import com.ellen.sqlitecreate.createsql.helper.SQLFieldType;
+import com.ellen.sqlitecreate.createsql.helper.SQLFieldTypeEnum;
 import com.ellen.zxysqlite.Student;
 import com.ellen.zxysqlite.Teacher;
-import com.ellen.zxysqlite.createsql.helper.SQLFieldType;
-import com.ellen.zxysqlite.createsql.helper.SQLFieldTypeEnum;
 import com.ellen.zxysqlite.table.reflection.ZxyReflectionTable;
 import com.google.gson.Gson;
 

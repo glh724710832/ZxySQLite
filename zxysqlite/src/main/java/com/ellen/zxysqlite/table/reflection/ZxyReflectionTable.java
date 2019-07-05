@@ -3,17 +3,16 @@ package com.ellen.zxysqlite.table.reflection;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
-import com.ellen.zxysqlite.createsql.add.AddManyRowToTable;
-import com.ellen.zxysqlite.createsql.add.AddSingleRowToTable;
-import com.ellen.zxysqlite.createsql.create.createtable.SQLField;
-import com.ellen.zxysqlite.createsql.helper.SQLFieldType;
-import com.ellen.zxysqlite.createsql.helper.SQLFieldTypeEnum;
-import com.ellen.zxysqlite.createsql.helper.Value;
-import com.ellen.zxysqlite.createsql.helper.WhereSymbolEnum;
-import com.ellen.zxysqlite.createsql.serach.SerachTableData;
-import com.ellen.zxysqlite.createsql.update.UpdateTableDataRow;
+import com.ellen.sqlitecreate.createsql.add.AddManyRowToTable;
+import com.ellen.sqlitecreate.createsql.add.AddSingleRowToTable;
+import com.ellen.sqlitecreate.createsql.create.createtable.SQLField;
+import com.ellen.sqlitecreate.createsql.helper.SQLFieldType;
+import com.ellen.sqlitecreate.createsql.helper.SQLFieldTypeEnum;
+import com.ellen.sqlitecreate.createsql.helper.Value;
+import com.ellen.sqlitecreate.createsql.helper.WhereSymbolEnum;
+import com.ellen.sqlitecreate.createsql.serach.SerachTableData;
+import com.ellen.sqlitecreate.createsql.update.UpdateTableDataRow;
 import com.ellen.zxysqlite.table.ZxyTable;
 
 import java.lang.reflect.Constructor;
@@ -273,7 +272,6 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
             addManyRowToTable.addValueList(list);
         }
         String addDataSql = addManyRowToTable.createSQL();
-        Log.e("添加数据的SQL语句",addDataSql);
         exeSQL(addDataSql);
     }
 
@@ -388,12 +386,8 @@ public abstract class ZxyReflectionTable<T> extends ZxyTable {
             T t = null;
             try {
                 t = getT();
-            }catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
+            }catch (Exception e){
+
             }
             for (int i = 0; i < sqlFieldList.size(); i++) {
                 Field field = sqlNameMap.get(sqlFieldList.get(i));

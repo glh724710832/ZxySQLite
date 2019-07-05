@@ -2,9 +2,8 @@ package com.ellen.zxysqlite;
 
 import android.database.sqlite.SQLiteDatabase;
 
-import com.ellen.zxysqlite.createsql.helper.SQLFieldType;
-import com.ellen.zxysqlite.createsql.helper.SQLFieldTypeEnum;
-import com.ellen.zxysqlite.table.reflection.EncryptionInterFace;
+import com.ellen.sqlitecreate.createsql.helper.SQLFieldType;
+import com.ellen.sqlitecreate.createsql.helper.SQLFieldTypeEnum;
 import com.ellen.zxysqlite.table.reflection.ZxyReflectionTable;
 
 public class PhoneSQLite extends ZxyReflectionTable<Phone>{
